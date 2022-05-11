@@ -1,0 +1,5 @@
+.wrapper {
+    width: var(--default-sidebar-width);
+    height: calc(100vh - var(--default-layout-header-height));
+    border-right: 1px solid #ccc;
+}
