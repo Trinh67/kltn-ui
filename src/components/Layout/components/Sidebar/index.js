@@ -6,10 +6,11 @@ const cx = classNames.bind(styles);
 function Sidebar() {
     return (
         <aside className={cx('wrapper')}>
-            <h2>Toán cao cấp</h2>
-            <h2>Giải tích</h2>
-            <h2>Nhập môn lập trình</h2>
-            <h2>Lập trình nâng cao</h2>
+            <h2>Algebra</h2>
+            <h2>Calculus 1</h2>
+            <h2>Calculus 2</h2>
+            <h2>Database</h2>
+            <h2>Advanced Programming</h2>
         </aside>
     );
 }

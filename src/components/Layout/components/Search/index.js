@@ -3,10 +3,12 @@ import { faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HeadlessTippy from '@tippyjs/react/headless';
 import classNames from 'classnames/bind';
+
 import { Wrapper as PopperWrapper } from '~/components/Popper';
 import DocumentItem from '~/components/DocumentItem';
 import { SearchIcon } from '~/components/Icons';
 import styles from './Search.module.scss';
+import { t } from '~/helpers/i18n';
 
 const cx = classNames.bind(styles);
 
@@ -70,7 +72,7 @@ function Search() {
                 <input
                     ref={inputRef}
                     value={searchValue}
-                    placeholder="Search content..."
+                    placeholder={t('HeaderActions.SearchContent')}
                     spellCheck={false}
                     onChange={(e) => setSearchValue(e.target.value)}
                     onFocus={() => setShowResult(true)}

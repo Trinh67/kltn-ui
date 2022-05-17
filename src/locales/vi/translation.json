@@ -1,0 +1,20 @@
+{
+  "BackToHome": "Về trang chủ",
+  "Languages": "Ngôn ngữ",
+  "English": "Tiếng Anh",
+  "Vietnamese": "Tiếng Việt",
+  "HeaderActions": {
+    "SearchContent": "Nội dung tìm kiếm...",
+    "UploadFile": "Tải tệp lên",
+    "Message": "Tin nhắn",
+    "Notification": "Thông báo"
+  },
+  "MenuActions": {
+    "ViewProfile": "Xem hồ sơ",
+    "FileManager": "Quản lí tệp",
+    "DisplayLanguage": "Tiếng Việt",
+    "Help": "Hỗ trợ",
+    "LogIn": "Đăng nhập",
+    "LogOut": "Đăng xuất"
+  }
+}

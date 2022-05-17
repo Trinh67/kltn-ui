@@ -16,6 +16,7 @@ function Button({
     large = false,
     children,
     className,
+    leftImg,
     leftIcon,
     rightIcon,
     onClick,
@@ -57,6 +58,7 @@ function Button({
 
     return (
         <Comp className={classes} {...props}>
+            {leftImg && <span className={cx('img')}><img src={leftImg} shape="square" /></span>}
             {leftIcon && <span className={cx('icon')}>{leftIcon}</span>}
             <span className={cx('title')}>{children}</span>
             {rightIcon && <span className={cx('icon')}>{rightIcon}</span>}

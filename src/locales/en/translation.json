@@ -1,0 +1,20 @@
+{
+  "BackToHome": "Back To Home",
+  "Languages": "Languages",
+  "English": "English",
+  "Vietnamese": "Vietnamese",
+  "HeaderActions": {
+    "SearchContent": "Search Content...",
+    "UploadFile": "Upload File",
+    "Message": "Message",
+    "Notification": "Notification"
+  },
+  "MenuActions": {
+    "ViewProfile": "Profile",
+    "FileManager": "File Manager",
+    "DisplayLanguage": "English",
+    "Help": "Help",
+    "LogIn": "Log in",
+    "LogOut": "Log out"
+  }
+}

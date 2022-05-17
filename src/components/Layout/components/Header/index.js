@@ -19,33 +19,41 @@ import Menu from '~/components/Popper/Menu';
 import { NotificationIcon, MessageIcon, UploadIcon } from '~/components/Icons';
 import Image from '~/components/Image';
 import Search from '../Search';
+import { t } from '~/helpers/i18n';
+import localizationHelpers from '~/helpers/localization';
+import localizationConstants from '~/constants/localization';
 
 const cx = classNames.bind(styles);
 
+const { REGIONS } = localizationConstants;
 const MENU_ITEMS = [
     {
         icon: <FontAwesomeIcon icon={faEarthAsia} />,
-        title: 'English',
+        title: t('MenuActions.DisplayLanguage'),
         children: {
-            title: 'Language',
+            title: t('Languages'),
             data: [
                 {
                     type: 'language',
-                    code: 'en',
-                    title: 'English',
+                    key: REGIONS.vi.key,
+                    title: t(REGIONS.vi.name),
+                    leftImg: REGIONS.vi.flag,
+                    flag: true
                 },
                 {
                     type: 'language',
-                    code: 'vi',
-                    title: 'Tiếng Việt',
+                    key: REGIONS.en.key,
+                    title: t(REGIONS.en.name),
+                    leftImg: REGIONS.en.flag,
+                    flag: true,
                 },
             ],
         },
     },
     {
         icon: <FontAwesomeIcon icon={faCircleQuestion} />,
-        title: 'Feedback and help',
-        to: '/feedback',
+        title: t('MenuActions.Help'),
+        to: '/help',
     },
 ];
 
@@ -57,6 +65,7 @@ function Header() {
         switch (menuItem.type) {
             case 'language':
                 // Handle change language
+                localizationHelpers.changeLanguage(menuItem.key)
                 break;
             default:
         }
@@ -65,18 +74,18 @@ function Header() {
     const userMenu = [
         {
             icon: <FontAwesomeIcon icon={faUser} />,
-            title: 'View profile',
+            title: t('MenuActions.ViewProfile'),
             to: '/profile',
         },
         {
             icon: <FontAwesomeIcon icon={faChartLine} />,
-            title: 'Statistic',
-            to: '/statistic',
+            title: t('MenuActions.FileManager'),
+            to: '/manager',
         },
         ...MENU_ITEMS,
         {
             icon: <FontAwesomeIcon icon={faSignOut} />,
-            title: 'Log out',
+            title: t('MenuActions.LogOut'),
             to: '/logout',
             separate: true,
         },
@@ -93,20 +102,20 @@ function Header() {
                 <div className={cx('actions')}>
                     {currentUser ? (
                         <>
-                            <Tippy delay={[0, 50]} content="Upload file" placement="bottom">
+                            <Tippy delay={[0, 50]} content={t('HeaderActions.UploadFile')} placement="bottom">
                                 <Link to="/upload">
                                     <button className={cx('action-btn')}>
                                         <UploadIcon />
                                     </button>
                                 </Link>
                             </Tippy>
-                            <Tippy delay={[0, 50]} content="Message" placement="bottom">
+                            <Tippy delay={[0, 50]} content={t('HeaderActions.Message')} placement="bottom">
                                 <button className={cx('action-btn')}>
                                     <MessageIcon />
                                     <span className={cx('badge')}>2</span>
                                 </button>
                             </Tippy>
-                            <Tippy delay={[0, 50]} content="Notification" placement="bottom">
+                            <Tippy delay={[0, 50]} content={t('HeaderActions.Notification')} placement="bottom">
                                 <button className={cx('action-btn')}>
                                     <NotificationIcon />
                                     <span className={cx('badge')}>5</span>
@@ -115,8 +124,7 @@ function Header() {
                         </>
                     ) : (
                         <>
-                            <Button text>Upload</Button>
-                            <Button primary>Log in</Button>
+                            <Button primary>{t('MenuActions.LogIn')}</Button>
                         </>
                     )}
 
