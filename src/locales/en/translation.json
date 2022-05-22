@@ -16,5 +16,8 @@
     "Help": "Help",
     "LogIn": "Log in",
     "LogOut": "Log out"
+  },
+  "SearchResults": {
+    "title": "Search Results"
   }
 }

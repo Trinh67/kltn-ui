@@ -8,17 +8,20 @@ import Profile from '~/pages/Profile';
 import Upload from '~/pages/Upload';
 import Search from '~/pages/Search';
 import FileManager from '~/pages/Manager';
+import Login from '~/pages/Login';
 
 // Public routes
 const publicRoutes = [
     { path: '/', component: Home },
-    { path: '/profile', component: Profile, layout: HeaderOnly },
-    { path: '/upload', component: Upload, layout: HeaderOnly },
-    { path: '/manager', component: FileManager, layout: HeaderOnly },
+    { path: '/login', component: Login, layout: null },
     { path: '/help', component: Help, layout: HeaderOnly },
     { path: '/search', component: Search, layout: null },
 ];
 
-const privateRoutes = [];
+const privateRoutes = [
+    { path: '/profile', component: Profile, layout: HeaderOnly },
+    { path: '/manager', component: FileManager, layout: HeaderOnly },
+    { path: '/upload', component: Upload, layout: HeaderOnly },
+];
 
 export { publicRoutes, privateRoutes };

@@ -16,5 +16,8 @@
     "Help": "Hỗ trợ",
     "LogIn": "Đăng nhập",
     "LogOut": "Đăng xuất"
+  },
+  "SearchResults": {
+    "title": "Kết quả tìm kiếm"
   }
 }
