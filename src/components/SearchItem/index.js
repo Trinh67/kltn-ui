@@ -3,11 +3,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import classNames from 'classnames/bind';
 import images from '~/assets/images';
 import Image from '~/components/Image';
-import styles from './DocumentItem.module.scss';
+import styles from './SearchItem.module.scss';
 
 const cx = classNames.bind(styles);
 
-function DocumentItem() {
+function SearchItem() {
     return (
         <div className={cx('wrapper')}>
             <Image
@@ -29,4 +29,4 @@ function DocumentItem() {
     );
 }
 
-export default DocumentItem;
+export default SearchItem;

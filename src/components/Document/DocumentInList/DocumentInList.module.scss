@@ -1,0 +1,45 @@
+.wrapper {
+    display: flex;
+    align-items: center;
+    padding: 6px 16px;
+    cursor: pointer;
+
+    &:hover {
+        background: rgba(22, 24, 35, 0.03);
+    }
+    border: 1px solid #545454;
+    border-radius: 8px;
+    margin: 4px;
+}
+
+.img-document {
+    width: 60px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.info {
+    flex: 1;
+    margin-left: 12px;
+}
+
+.title {
+    font-size: 1.6rem;
+    font-weight: 500;
+}
+
+.short-content {
+    font-size: 1.4rem;
+    color: rgba(22, 24, 35, 0.5);
+}
+
+.statistic {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+}
+
+div {
+    padding: 2px 6px 2px 4px;
+}
