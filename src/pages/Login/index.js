@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import FacebookLogin from 'react-facebook-login';
 
-const REACT_APP_GOOGLE_ID = '162098319608-gh3q7hsfsn57h6h8t0ipslan9c6d94e0.apps.googleusercontent.com';
+const REACT_APP_GOOGLE_ID = '162098319608-buveos2g614scesufvvqrqqke3nml452.apps.googleusercontent.com';
 
 function Login() {
   const [showloginButton, setShowloginButton] = useState(true);

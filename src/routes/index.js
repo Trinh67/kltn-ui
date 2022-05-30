@@ -14,6 +14,7 @@ import Login from '~/pages/Login';
 const publicRoutes = [
     { path: '/', component: Home },
     { path: '/login', component: Login, layout: null },
+    { path: '/logout', component: Login, layout: null },
     { path: '/help', component: Help, layout: HeaderOnly },
     { path: '/search', component: Search, layout: null },
 ];
