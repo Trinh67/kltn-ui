@@ -94,11 +94,11 @@ function Header() {
     return (
         <header className={cx('wrapper')}>
             <div className={cx('inner')}>
-                <Link to="/">
+                <Link className={cx('page-name')} to="/">
                     <img className={cx('logo-fit')} src={images.logo} alt="FIT" />
+                    <h2 className={cx('name-page')}>KLTN</h2>
                 </Link>
                 <Search />
-
                 <div className={cx('actions')}>
                     {currentUser ? (
                         <>
