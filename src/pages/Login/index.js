@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { GoogleLogin, GoogleLogout } from 'react-google-login';
+import React, { useEffect, useState } from 'react';
 import FacebookLogin from 'react-facebook-login';
+import jwt_decode from 'jwt-decode'
 
 const REACT_APP_GOOGLE_ID = '162098319608-buveos2g614scesufvvqrqqke3nml452.apps.googleusercontent.com';
 
@@ -22,6 +22,8 @@ function Login() {
 
   const responseGoogle = (response) => {
     console.log(response);
+    var userObj = jwt_decode(response.credential);
+    console.log(userObj)
   };
 
   const componentClicked = (data) => {
@@ -32,21 +34,22 @@ function Login() {
     console.log(response);
   };
 
+  useEffect(() => {
+    /* global google */
+    google.accounts.id.initialize({
+      client_id: REACT_APP_GOOGLE_ID,
+      callback: responseGoogle
+    });
+
+    google.accounts.id.renderButton(
+      document.getElementById("signInDiv"),
+      { theme: "outline", size: "large"}
+    )
+  }, []);
+
   return (
     <>
-      {showloginButton ? (
-        <GoogleLogin
-          clientId={REACT_APP_GOOGLE_ID}
-          buttonText="Log in with Google"
-          onSuccess={onLoginSuccess}
-          onFailure={responseGoogle}
-          cookiePolicy={'single_host_origin'}
-          plugin_name="kltn-client"
-        />
-      ) : null}
-      {showlogoutButton ? (
-        <GoogleLogout clientId={REACT_APP_GOOGLE_ID} buttonText="Sign Out" onLogoutSuccess={onSignoutSuccess} />
-      ) : null}
+      <div id="signInDiv"></div>
       <FacebookLogin
         appId="292398773067523"
         autoLoad={false}
