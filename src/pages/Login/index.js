@@ -1,8 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import classNames from 'classnames/bind';
 import FacebookLogin from 'react-facebook-login';
 import jwt_decode from 'jwt-decode'
+import { Col, Row } from 'antd';
+import styles from './Login.module.scss';
+
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFacebookF } from '@fortawesome/free-brands-svg-icons' 
+
+const cx = classNames.bind(styles);
 
 const REACT_APP_GOOGLE_ID = '162098319608-buveos2g614scesufvvqrqqke3nml452.apps.googleusercontent.com';
+
+var currentUser = {}
 
 function Login() {
   const [showloginButton, setShowloginButton] = useState(true);
@@ -22,8 +32,9 @@ function Login() {
 
   const responseGoogle = (response) => {
     console.log(response);
-    var userObj = jwt_decode(response.credential);
-    console.log(userObj)
+    currentUser = jwt_decode(response.credential);
+    console.log(currentUser);
+    history.push("/")
   };
 
   const componentClicked = (data) => {
@@ -32,6 +43,8 @@ function Login() {
 
   const responseFacebook = (response) => {
     console.log(response);
+    currentUser = response;
+    history.push("/")
   };
 
   useEffect(() => {
@@ -43,22 +56,36 @@ function Login() {
 
     google.accounts.id.renderButton(
       document.getElementById("signInDiv"),
-      { theme: "outline", size: "large"}
+      { theme: "outline", size: "large", width: "300px", text: "Sign In with Google"}
     )
   }, []);
 
   return (
-    <>
-      <div id="signInDiv"></div>
-      <FacebookLogin
-        appId="292398773067523"
-        autoLoad={false}
-        fields="name,picture"
-        onClick={componentClicked}
-        callback={responseFacebook}
-      />
-    </>
+    <Row>
+      <Col flex={5} ></Col>
+      <Col className={cx('loginForm')} flex={1}>
+        Đăng nhập
+        <Row lg={6} md={6} sm={6} xs={6} className={cx('buttonLogin')}>
+          <div id="signInDiv"></div>
+        </Row>
+        <Row lg={6} md={6} sm={6} xs={6} className={cx('buttonLogin')}>
+          <FacebookLogin
+            appId="292398773067523"
+            autoLoad={false}
+            fields="name,picture"
+            onClick={componentClicked}
+            callback={responseFacebook}
+            cssClass={cx('btnFacebook')}
+            icon={<FontAwesomeIcon icon={faFacebookF} style={{'padding-right': '20px'}} />}
+            textButton = "Đăng nhập bằng Facebook"
+          />
+        </Row>
+      </Col>
+      <Col flex={5} ></Col>
+    </Row>
   );
 }
 
 export default Login;
+
+export const StoreContext = React.createContext(currentUser);
