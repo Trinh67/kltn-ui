@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import classNames from 'classnames/bind';
 import FacebookLogin from 'react-facebook-login';
 import jwt_decode from 'jwt-decode'
@@ -6,7 +6,8 @@ import { Col, Row } from 'antd';
 import styles from './Login.module.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebookF } from '@fortawesome/free-brands-svg-icons' 
+import { faFacebookF } from '@fortawesome/free-brands-svg-icons'
+import { browserHistory } from '~/helpers';
 
 const cx = classNames.bind(styles);
 
@@ -15,36 +16,36 @@ const REACT_APP_GOOGLE_ID = '162098319608-buveos2g614scesufvvqrqqke3nml452.apps.
 var currentUser = {}
 
 function Login() {
-  const [showloginButton, setShowloginButton] = useState(true);
-  const [showlogoutButton, setShowlogoutButton] = useState(false);
-  const onLoginSuccess = (res) => {
-    console.log('Login Success:', res.profileObj);
-    setShowloginButton(false);
-    setShowlogoutButton(true);
-  };
-
-  const onSignoutSuccess = () => {
-    alert('You have been logged out successfully');
-    console.clear();
-    setShowloginButton(true);
-    setShowlogoutButton(false);
-  };
-
   const responseGoogle = (response) => {
-    console.log(response);
-    currentUser = jwt_decode(response.credential);
-    console.log(currentUser);
-    history.push("/")
+    var user = jwt_decode(response.credential);
+    currentUser = {
+      'name': user.name,
+      'imageUrl': user.picture,
+      'email': user.email,
+      'user_id': user.sub,
+      'source': 'google'
+    }
+    localStorage.setItem('currentUser', JSON.stringify(currentUser))
+    browserHistory.push("/");
+    window.location.reload()
   };
 
-  const componentClicked = (data) => {
-    console.log(data);
+  const componentClicked = () => {
+    return
   };
 
   const responseFacebook = (response) => {
-    console.log(response);
-    currentUser = response;
-    history.push("/")
+    var user = response;
+    currentUser = {
+      'name': user.name,
+      'imageUrl': user.picture.data.url,
+      'email': user.email,
+      'user_id': user.id,
+      'source': 'facebook'
+    }
+    localStorage.setItem('currentUser', JSON.stringify(currentUser))
+    browserHistory.push("/");
+    window.location.reload()
   };
 
   useEffect(() => {

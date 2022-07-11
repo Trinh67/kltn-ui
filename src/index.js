@@ -6,11 +6,12 @@ import App from '~/App';
 import reportWebVitals from './reportWebVitals';
 import i18n from '~/i18n';
 import GlobalStyles from '~/components/GlobalStyles';
+import { browserHistory } from '~/helpers';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <I18nextProvider i18n={i18n}>
+    <I18nextProvider i18n={i18n} history={browserHistory}>
       <GlobalStyles>
         <App />
       </GlobalStyles>

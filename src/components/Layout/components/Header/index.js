@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,7 +14,6 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 
 import Button from '~/components/Button';
-import { StoreContext } from '~/pages/Login';
 import styles from './Header.module.scss';
 import images from '~/assets/images';
 import Menu from '~/components/Popper/Menu';
@@ -60,9 +59,7 @@ const MENU_ITEMS = [
 ];
 
 function Header() {
-    const currentUser = useContext(StoreContext);
-    console.log(1111)
-    console.log(currentUser)
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
     // Handle logic
     const handleMenuChange = (menuItem) => {
@@ -128,7 +125,7 @@ function Header() {
                         </>
                     ) : (
                         <>
-                            <Button primary>{t('MenuActions.LogIn')}</Button>
+                            <Link to='/login'><Button primary>{t('MenuActions.LogIn')}</Button></Link>
                         </>
                     )}
 
@@ -136,8 +133,8 @@ function Header() {
                         {currentUser ? (
                             <Image
                                 className={cx('user-avatar')}
-                                src={images.logo}
-                                alt="Nguyen Van A"
+                                src={currentUser.imageUrl ? currentUser.imageUrl : images.logo}
+                                alt={currentUser.name}
                             />
                         ) : (
                             <button className={cx('more-btn')}>
