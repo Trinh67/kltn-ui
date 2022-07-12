@@ -8,29 +8,46 @@ import styles from './DocumentInList.module.scss';
 
 const cx = classNames.bind(styles);
 
-function DocumentInList() {
+function DocumentInList(file) {
+    const fileDetail = file.file
+    let imageDetail
+
+    switch (fileDetail.type) {
+        case 'pdf':
+            imageDetail = images.pdf
+            break;
+        case 'docx':
+            imageDetail = images.docx
+            break;
+        case 'pptx':
+            imageDetail = images.pptx
+            break;
+        default:
+            imageDetail = images.pdf
+    }
+    
     return (
         <div className={cx('wrapper')}>
             <Image
                 className={cx('img-document')}
-                src={images.noImage}
+                src={images.logo}
                 alt="img-document"
             />
             <div className={cx('info')}>
                 <h4 className={cx('title')}>
-                    <span>Title document .....</span>
+                    <span>{fileDetail.fileName}</span>
                 </h4>
-                <span className={cx('short-content')}>Sự bùng nổ về cuộc cách mạng 4.0 đã khiến cụm từ Interner Of Things hay vạn vật kết nối internet trở nên không còn quá xa lạ với nhiều người....</span>
+                <span className={cx('short-content')}>{fileDetail.fileDescription}</span>
                 <div className={cx('statistic')}>
                     <Image
                         className={cx('type-document')}
-                        src={images.pdf}
+                        src={imageDetail}
                         alt="type-document"
                     />
                     <div className={cx('pages')}> 29 {t('Pages')} </div>
                     <div className={cx('views')}>
                         <FontAwesomeIcon icon={faEye} />
-                        <span> 15 </span>
+                        <span> {fileDetail.views} </span>
                     </div>
                     <div className={cx('author')}>
                         <FontAwesomeIcon icon={faUser} />
@@ -38,11 +55,11 @@ function DocumentInList() {
                     </div>
                     <div className={cx('time')}>
                         <FontAwesomeIcon icon={faCalendarCheck} />
-                        <span> 30/04/2022 </span>
+                        <span> {fileDetail.updatedAt} </span>
                     </div>
                     <div className={cx('download')}>
                         <FontAwesomeIcon icon={faCircleDown} />
-                        <span> 6 </span>
+                        <span> {fileDetail.downloads} </span>
                     </div>
                 </div>
             </div>

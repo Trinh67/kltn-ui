@@ -17,8 +17,29 @@
     "LogIn": "Đăng nhập",
     "LogOut": "Đăng xuất"
   },
+  "LogIn": "Đăng nhập",
+  "LogInFace": "Đăng nhập bằng Facebook",
   "SearchResults": {
     "title": "Kết quả tìm kiếm"
   },
-  "Pages": "trang"
+  "Pages": "trang",
+  "Actions": {
+    "Cancel": "Hủy",
+    "Save": "Lưu",
+    "Delete": "Xóa",
+    "Clone": "Nhân bản",
+    "Edit": "Sửa",
+    "Update": "Cập nhật",
+    "Start": "Bắt đầu",
+    "Lock": "Khóa",
+    "Unlock": "Mở khóa",
+    "Confirm": "Xác nhận",
+    "Ok": "Chắc chắn",
+    "No": "Không",
+    "Close": "Đóng",
+    "ConfirmDelete": "Chắc chắn xóa"
+  },
+  "Warning": {
+    "ConfirmLogout": "Bạn chắc chắn muốn đăng xuất?"
+  }
 }

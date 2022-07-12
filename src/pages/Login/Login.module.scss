@@ -1,10 +1,15 @@
+.logo {
+  width: 100%;
+  justify-content: center;
+}
+
 .btnFacebook {
   width: 300px;
-  height: 42px;
+  height: 40px;
   border-radius: 4px;
   background: #3b5998;
   color: white;
-  border: 0px transparent;
+  border: 0 transparent;
   text-align: center;
   font-size: 1.4rem;
   margin: 5px;
@@ -23,10 +28,12 @@
     border-radius: 8px;
     text-align: center;
     font-size: 2.5rem;
+    font-weight: 600;
     padding: 30px;
 }
 
 .buttonLogin {
     width: 100%;
+    margin-top: 15px;
     justify-content: center;
 }

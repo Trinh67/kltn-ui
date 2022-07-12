@@ -2,12 +2,14 @@ import React, { useEffect } from 'react';
 import classNames from 'classnames/bind';
 import FacebookLogin from 'react-facebook-login';
 import jwt_decode from 'jwt-decode'
-import { Col, Row } from 'antd';
+import { Col, Image, Row } from 'antd';
 import styles from './Login.module.scss';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF } from '@fortawesome/free-brands-svg-icons'
 import { browserHistory } from '~/helpers';
+import images from '~/assets/images';
+import { t } from 'i18next';
 
 const cx = classNames.bind(styles);
 
@@ -30,9 +32,7 @@ function Login() {
     window.location.reload()
   };
 
-  const componentClicked = () => {
-    return
-  };
+  const componentClicked = () => {};
 
   const responseFacebook = (response) => {
     var user = response;
@@ -65,7 +65,10 @@ function Login() {
     <Row>
       <Col flex={5} ></Col>
       <Col className={cx('loginForm')} flex={1}>
-        Đăng nhập
+        <Row className={cx('logo')}>
+          <Image src={images.fit} alt="Logo FIT" width='180px'></Image>
+        </Row>
+        {t('LogIn')}
         <Row lg={6} md={6} sm={6} xs={6} className={cx('buttonLogin')}>
           <div id="signInDiv"></div>
         </Row>
@@ -78,7 +81,7 @@ function Login() {
             callback={responseFacebook}
             cssClass={cx('btnFacebook')}
             icon={<FontAwesomeIcon icon={faFacebookF} style={{'padding-right': '20px'}} />}
-            textButton = "Đăng nhập bằng Facebook"
+            textButton = {t('LogInFace')}
           />
         </Row>
       </Col>

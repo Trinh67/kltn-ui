@@ -23,6 +23,7 @@ import Search from '../Search';
 import { t } from '~/helpers/i18n';
 import localizationHelpers from '~/helpers/localization';
 import localizationConstants from '~/constants/localization';
+import { Modal } from 'antd';
 
 const cx = classNames.bind(styles);
 
@@ -68,6 +69,19 @@ function Header() {
                 // Handle change language
                 localizationHelpers.changeLanguage(menuItem.key)
                 break;
+            case 'logout':
+                // Handle user logout
+                Modal.confirm({
+                    title: t('Warning.ConfirmLogout'),
+                    okText: t('Actions.Confirm'),
+                    cancelText: t('Actions.Cancel'),
+                    okType: 'primary',
+                    onOk: () => {
+                        localStorage.setItem('currentUser', JSON.stringify(null))
+                        window.location.reload()
+                    },
+                  })
+                break;
             default:
         }
     };
@@ -87,8 +101,9 @@ function Header() {
         {
             icon: <FontAwesomeIcon icon={faSignOut} />,
             title: t('MenuActions.LogOut'),
-            to: '/logout',
+            to: '/',
             separate: true,
+            type: 'logout'
         },
     ];
 
@@ -124,9 +139,7 @@ function Header() {
                             </Tippy>
                         </>
                     ) : (
-                        <>
-                            <Link to='/login'><Button primary>{t('MenuActions.LogIn')}</Button></Link>
-                        </>
+                        <Link to='/login'><Button primary>{t('MenuActions.LogIn')}</Button></Link>
                     )}
 
                     <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>

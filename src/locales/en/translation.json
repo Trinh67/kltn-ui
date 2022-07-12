@@ -17,8 +17,29 @@
     "LogIn": "Log in",
     "LogOut": "Log out"
   },
+  "LogIn": "Log in",
+  "LogInFace": "Log in with Facebook",
   "SearchResults": {
     "title": "Search Results"
   },
-  "Pages": "pages"
+  "Pages": "pages",
+  "Actions": {
+    "Cancel": "Cancel",
+    "Save": "Save",
+    "Delete": "Delete",
+    "Clone": "Clone",
+    "Edit": "Edit",
+    "Update": "Update",
+    "Start": "Start",
+    "Lock": "Lock",
+    "Unlock": "Unlock",
+    "Confirm": "Confirm",
+    "Ok": "Yes",
+    "No": "No",
+    "Close": "Close",
+    "ConfirmDelete": "Delete"
+  },
+  "Warning": {
+    "ConfirmLogout": "Are you sure you want to log out?"
+  }
 }
