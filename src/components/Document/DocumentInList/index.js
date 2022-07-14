@@ -44,14 +44,14 @@ function DocumentInList(file) {
                         src={imageDetail}
                         alt="type-document"
                     />
-                    <div className={cx('pages')}> 29 {t('Pages')} </div>
+                    <div className={cx('pages')}> {fileDetail.pages} {t('Pages')} </div>
                     <div className={cx('views')}>
                         <FontAwesomeIcon icon={faEye} />
                         <span> {fileDetail.views} </span>
                     </div>
                     <div className={cx('author')}>
                         <FontAwesomeIcon icon={faUser} />
-                        <span> trinh.tx </span>
+                        <span> {fileDetail.authorName} </span>
                     </div>
                     <div className={cx('time')}>
                         <FontAwesomeIcon icon={faCalendarCheck} />
