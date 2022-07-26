@@ -5,7 +5,7 @@ import { HeaderOnly } from '~/components/Layout';
 import Home from '~/pages/Home';
 import Help from '~/pages/Help';
 import Profile from '~/pages/Profile';
-import Upload from '~/pages/Upload';
+import UploadFile from '~/pages/Upload';
 import Search from '~/pages/Search';
 import FileManager from '~/pages/Manager';
 import Login from '~/pages/Login';
@@ -24,7 +24,7 @@ const publicRoutes = [
 const privateRoutes = [
     { path: '/profile', component: Profile, layout: HeaderOnly },
     { path: '/manager', component: FileManager, layout: HeaderOnly },
-    { path: '/upload', component: Upload, layout: HeaderOnly },
+    { path: '/upload', component: UploadFile, layout: HeaderOnly },
 ];
 
 export { publicRoutes, privateRoutes };

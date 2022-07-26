@@ -41,5 +41,22 @@
   },
   "Warning": {
     "ConfirmLogout": "Are you sure you want to log out?"
+  },
+  "UploadForm": {
+    "DraggerTitle": "Click or drag file to this area to upload",
+    "DraggerNote": "Support for a single upload. Format file support: PDF, Docx",
+    "TitleForm": "Form Upload Document",
+    "TitleFile": "Title",
+    "EnterTitleFile": "Enter title Document",
+    "CategoryFile": "Category",
+    "SelectCategoryFile": "Select a category",
+    "AddCategoryFile": "Request add new Category",
+    "EnterAddCategoryFile": "Enter new category",
+    "Description": "Description",
+    "EnterDescription": "Enter description of file",
+    "Actions": {
+      "Submit": "Submit",
+      "Reset": "Reset form"
+    }
   }
 }

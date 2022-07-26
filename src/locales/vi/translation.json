@@ -41,5 +41,22 @@
   },
   "Warning": {
     "ConfirmLogout": "Bạn chắc chắn muốn đăng xuất?"
+  },
+  "UploadForm": {
+    "DraggerTitle": "Click chuột hoặc kéo tệp cần tải vào vùng này để tải tệp lên",
+    "DraggerNote": "Chỉ hỗ trợ tải từng tệp. Định dạng tệp được hỗ trợ gồm: PDF, Docx",
+    "TitleForm": "Tải tài liệu lên hệ thống",
+    "TitleFile": "Tiêu đề",
+    "EnterTitleFile": "Nhập tiêu đề",
+    "CategoryFile": "Danh mục",
+    "SelectCategoryFile": "Chọn một danh mục",
+    "AddCategoryFile": "Yêu cầu thêm một danh mục mới",
+    "EnterAddCategoryFile": "Nhập tên danh mục mới",
+    "Description": "Mô tả",
+    "EnterDescription": "Nhập mô tả tài liệu",
+    "Actions": {
+      "Submit": "Gửi",
+      "Reset": "Nhập lại"
+    }
   }
 }
