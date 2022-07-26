@@ -1,97 +1,106 @@
-import { useEffect, useState, useRef } from 'react';
-import { faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import HeadlessTippy from '@tippyjs/react/headless';
 import classNames from 'classnames/bind';
+import { useEffect, useState, useRef } from 'react';
+import HeadlessTippy from '@tippyjs/react/headless';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCircleXmark, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
-import { Wrapper as PopperWrapper } from '~/components/Popper';
-import SearchItem from '~/components/SearchItem';
-import { SearchIcon } from '~/components/Icons';
 import styles from './Search.module.scss';
+import { elasticServices } from '~/services';
+import { SearchIcon } from '~/components/Icons';
+import SearchItem from '~/components/SearchItem';
+import { Wrapper as PopperWrapper } from '~/components/Popper';
+
 import { t } from '~/helpers/i18n';
 
 const cx = classNames.bind(styles);
 
 function Search() {
-    const [searchValue, setSearchValue] = useState('');
-    const [searchResult, setSearchResult] = useState([]);
-    const [showResult, setShowResult] = useState(false);
-    const [loading, setLoading] = useState(false);
+  const [searchValue, setSearchValue] = useState('');
+  const [searchResult, setSearchResult] = useState([]);
+  const [showResult, setShowResult] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-    const inputRef = useRef();
+  const initial = async (params) => {
+    const result = await elasticServices.searchFiles(params);
+    setSearchResult(result.data.files);
+  };
 
-    useEffect(() => {
-            if (searchValue) {
-                setTimeout(() => {
-                    setSearchResult([1, 2, 3]);
-                }, 2000);
-            }
-    }, [searchValue]);
+  const inputRef = useRef();
 
-    const handleClear = () => {
-        setSearchValue('');
-        setSearchResult([]);
-        inputRef.current.focus();
-    };
-
-    const handleSearchClick = async () => {
-        setLoading(true);
-        setShowResult(false);
-        await fetchApi(3000);
-        setSearchResult([1, 2]);
+  useEffect(() => {
+    setLoading(true);
+    let timer;
+    if (searchValue) {
+      timer = setTimeout(() => {
+        initial({ content: searchValue });
         setShowResult(true);
-        setLoading(false);
+      }, 1800);
     }
+    setLoading(false);
+    return () => clearTimeout(timer);
+  }, [searchValue]);
 
-    const fetchApi = (milliseconds) => {
-        return new Promise(resolve => setTimeout(resolve, milliseconds))
-    }
+  const handleClear = () => {
+    setSearchValue('');
+    setSearchResult([]);
+    inputRef.current.focus();
+  };
 
-    const handleHideResult = () => {
-        setShowResult(false);
-    };
+  const handleSearchClick = async () => {
+    setLoading(true);
+    await fetchApi(3000);
+    setSearchResult([1, 2]);
+    setLoading(false);
+  };
 
-    return (
-        <HeadlessTippy
-            interactive
-            visible={showResult && searchResult.length > 0}
-            render={(attrs) => (
-                <div className={cx('search-result')} tabIndex="-1" {...attrs}>
-                    <PopperWrapper>
-                        <h4 className={cx('search-title')}>{t('SearchResults.title')}</h4>
-                        <SearchItem />
-                        <SearchItem />
-                        <SearchItem />
-                        <SearchItem />
-                    </PopperWrapper>
-                </div>
-            )}
-            onClickOutside={handleHideResult}
-        >
-            <div className={cx('search')}>
-                <input
-                    ref={inputRef}
-                    value={searchValue}
-                    placeholder={t('HeaderActions.SearchContent')}
-                    spellCheck={false}
-                    onChange={(e) => setSearchValue(e.target.value)}
-                    onFocus={() => setShowResult(true)}
-                />
-                {!!searchValue && !loading && (
-                    <button className={cx('clear')} onClick={handleClear}>
-                        <FontAwesomeIcon icon={faCircleXmark} />
-                    </button>
-                )}
-                {loading && (
-                    <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />
-                )}
+  const fetchApi = (milliseconds) => {
+    return new Promise((resolve) => setTimeout(resolve, milliseconds));
+  };
 
-                <button className={cx('search-btn')} disabled={!searchValue} onClick={handleSearchClick}>
-                    <SearchIcon />
-                </button>
-            </div>
-        </HeadlessTippy>
-    );
+  const handleHideResult = () => {
+    setShowResult(false);
+  };
+
+  const handleSearchItemClick = () => {
+    setShowResult(false);
+  };
+
+  return (
+    <HeadlessTippy
+      interactive
+      visible={showResult}
+      render={(attrs) => (
+        <div className={cx('search-result')} tabIndex="-1" {...attrs} onClick={handleSearchItemClick}>
+          <PopperWrapper>
+            <h4 className={cx('search-title')}>{t('SearchResults.title')}</h4>
+            {!!searchResult.length > 0 && searchResult.map((file) => <SearchItem file={file} key={file.id} />)}
+            {!!searchResult.length == 0 && <p>No data</p>}
+          </PopperWrapper>
+        </div>
+      )}
+      onClickOutside={handleHideResult}
+    >
+      <div className={cx('search')}>
+        <input
+          ref={inputRef}
+          value={searchValue}
+          placeholder={t('HeaderActions.SearchContent')}
+          spellCheck={false}
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
+        {!!searchValue && !loading && (
+          <button className={cx('clear')} onClick={handleClear}>
+            <FontAwesomeIcon icon={faCircleXmark} />
+          </button>
+        )}
+        {loading && <FontAwesomeIcon className={cx('loading')} icon={faSpinner} />}
+
+        <button className={cx('search-btn')} disabled={!searchValue} onClick={handleSearchClick}>
+          <SearchIcon />
+        </button>
+      </div>
+    </HeadlessTippy>
+  );
 }
 
 export default Search;

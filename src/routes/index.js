@@ -9,6 +9,7 @@ import Upload from '~/pages/Upload';
 import Search from '~/pages/Search';
 import FileManager from '~/pages/Manager';
 import Login from '~/pages/Login';
+import DocumentDetail from '~/pages/DocumentDetail';
 
 // Public routes
 const publicRoutes = [
@@ -17,6 +18,7 @@ const publicRoutes = [
     { path: '/logout', component: Login, layout: null },
     { path: '/help', component: Help, layout: HeaderOnly },
     { path: '/search', component: Search, layout: null },
+    { path: '/document/detail', component: DocumentDetail, layout: HeaderOnly },
 ];
 
 const privateRoutes = [

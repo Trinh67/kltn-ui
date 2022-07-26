@@ -3,15 +3,15 @@ import { Noti } from '~/helpers';
 
 const apiUrl = 'http://127.0.0.1:8000/api/v1/';
 
-const ApiUrl = apiUrl + 'file';
+const ApiUrl = apiUrl + 'elastic-file';
 
 /**
- * Lấy danh sách file
+ * Tìm kiếm file
  * @returns Danh sách file
  */
-const getFiles = async () => {
+const searchFiles = async (Parameters) => {
   const Files = axios
-    .get(ApiUrl + '/list-file')
+    .post(ApiUrl + '/search', Parameters)
     .then((response) => {
       return response;
     })
@@ -24,5 +24,5 @@ const getFiles = async () => {
 };
 
 export default {
-  getFiles,
+  searchFiles,
 };
