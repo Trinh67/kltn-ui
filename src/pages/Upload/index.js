@@ -96,7 +96,7 @@ function UploadFile() {
               {({ getFieldValue }) =>
                 getFieldValue('category') === 'other' ? (
                   <Form.Item name="addCategory" label={t('UploadForm.AddCategoryFile')} rules={[{ required: true }]}>
-                    <Input placeholder={t('UploadForm.EnterAddCategoryFile')}/>
+                    <Input placeholder={t('UploadForm.EnterAddCategoryFile')} />
                   </Form.Item>
                 ) : null
               }
@@ -117,10 +117,10 @@ function UploadFile() {
             <Form.Item name="filePath" hidden={true} initialValue="file-demo.pdf"></Form.Item>
             <Form.Item {...tailLayout}>
               <Button size="large" type="primary" htmlType="submit">
-              {t('UploadForm.Actions.Submit')}
+                {t('UploadForm.Actions.Submit')}
               </Button>
               <Button size="large" htmlType="button" onClick={onReset} className={cx('button-reset')}>
-              {t('UploadForm.Actions.Reset')}
+                {t('UploadForm.Actions.Reset')}
               </Button>
             </Form.Item>
           </Form>
