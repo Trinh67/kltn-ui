@@ -39,6 +39,11 @@
     "Close": "Đóng",
     "ConfirmDelete": "Chắc chắn xóa"
   },
+  "Messages": {
+    "Successful": "Thành công",
+    "Error": "Có lỗi",
+    "UploadSuccess": "đã tải lên thành công!"
+  },
   "Warning": {
     "ConfirmLogout": "Bạn chắc chắn muốn đăng xuất?"
   },
@@ -57,6 +62,9 @@
     "Actions": {
       "Submit": "Gửi",
       "Reset": "Nhập lại"
+    },
+    "Options": {
+      "Other": "Khác"
     }
   }
 }

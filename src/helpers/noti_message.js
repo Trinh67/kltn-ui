@@ -1,8 +1,10 @@
 import { notification } from 'antd';
 
+import { t } from '~/helpers/i18n';
+
 const SuccessMessage = (msg) => {
   notification.success({
-    message: `Successful`,
+    message: t('Messages.Successful'),
     description: `${msg}!`,
     style: { color: 'green' },
   });
@@ -10,7 +12,7 @@ const SuccessMessage = (msg) => {
 
 const ErrorMessage = (msg) => {
   notification.error({
-    message: `Error`,
+    message: t('Messages.Error'),
     description: `${msg}!`,
     style: { color: 'red' },
   });

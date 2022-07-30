@@ -23,6 +23,26 @@ const searchFiles = async (Parameters) => {
   return res.data;
 };
 
+/**
+ * Create file
+ * @returns File Id
+ */
+ const createFile = async (FormData) => {
+  const File = axios
+    .post(ApiUrl + '/', FormData)
+    .then((response) => {
+      Noti.SuccessMessage("Upload document successful!")
+      return response;
+    })
+    .catch((err) => {
+      Noti.ErrorMessage(err.response.data.message);
+      return err.response;
+    });
+  const res = await File;
+  return res.data;
+};
+
 export default {
   searchFiles,
+  createFile
 };

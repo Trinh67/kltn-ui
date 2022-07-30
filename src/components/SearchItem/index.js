@@ -1,12 +1,17 @@
 import classNames from 'classnames/bind';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faUser, faCalendarCheck, faCircleDown } from '@fortawesome/free-regular-svg-icons';
+import { faEye, faUser, faCalendarCheck, faCircleDown, faListAlt } from '@fortawesome/free-regular-svg-icons';
 
 import { t } from 'i18next';
 import images from '~/assets/images';
 import Image from '~/components/Image';
 import styles from './SearchItem.module.scss';
+import localStorageConstants from '~/constants/localStorage';
+import localizationConstants from '~/constants/localization';
+
+const { LOCALIZATION } = localStorageConstants;
+const { REGIONS } = localizationConstants;
 
 const cx = classNames.bind(styles);
 
@@ -29,6 +34,8 @@ function SearchItem(file) {
     default:
       imageDetail = images.pdf;
   }
+
+  const category = localStorage.getItem(LOCALIZATION) === REGIONS.vi.key ? fileDetail.categoryVi : fileDetail.categoryEn
 
   const handleDocumentClick = () => {
     navigate('/document/detail', { state: file });
@@ -63,6 +70,10 @@ function SearchItem(file) {
           <div className={cx('download')}>
             <FontAwesomeIcon icon={faCircleDown} />
             <span> {fileDetail.downloads} </span>
+          </div>
+          <div className={cx('category')}>
+            <FontAwesomeIcon icon={faListAlt} />
+            <span> {category} </span>
           </div>
         </div>
       </div>

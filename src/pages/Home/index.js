@@ -1,10 +1,10 @@
-import DocumentInList from "~/components/Document/DocumentInList";
-
-import classNames from 'classnames/bind';
-import styles from './Home.module.scss';
 import { Pagination } from 'antd';
-import { fileServices } from "~/services";
+import classNames from 'classnames/bind';
 import { useState, useEffect } from 'react';
+
+import styles from './Home.module.scss';
+import { fileServices } from "~/services";
+import DocumentInList from "~/components/Document/DocumentInList";
 
 const cx = classNames.bind(styles);
 

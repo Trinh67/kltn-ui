@@ -39,6 +39,11 @@
     "Close": "Close",
     "ConfirmDelete": "Delete"
   },
+  "Messages": {
+    "Successful": "Successful",
+    "Error": "Error",
+    "UploadSuccess": "uploaded successfully."
+  },
   "Warning": {
     "ConfirmLogout": "Are you sure you want to log out?"
   },
@@ -57,6 +62,9 @@
     "Actions": {
       "Submit": "Submit",
       "Reset": "Reset form"
+    },
+    "Options": {
+      "Other": "Other"
     }
   }
 }
