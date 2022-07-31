@@ -42,7 +42,8 @@
   "Messages": {
     "Successful": "Thành công",
     "Error": "Có lỗi",
-    "UploadSuccess": "đã tải lên thành công!"
+    "UploadSuccess": "đã tải lên thành công!",
+    "CreateDocSuccess": "Tải lên tài liệu thành công!"
   },
   "Warning": {
     "ConfirmLogout": "Bạn chắc chắn muốn đăng xuất?"

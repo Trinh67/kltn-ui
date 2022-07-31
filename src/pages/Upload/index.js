@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
 import classNames from 'classnames/bind';
+import { useState, useEffect } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
 import { message, Upload, Button, Form, Input, Select, Spin } from 'antd';
 
@@ -68,7 +68,7 @@ function UploadFile() {
     setUploading(true)
     const res = await elasticServices.createFile(values)
     setUploading(false)
-    if (res.code == '200'){
+    if (res.code === 200){
       form.resetFields();
     }
   };

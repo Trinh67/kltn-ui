@@ -42,7 +42,8 @@
   "Messages": {
     "Successful": "Successful",
     "Error": "Error",
-    "UploadSuccess": "uploaded successfully."
+    "UploadSuccess": "uploaded successfully.",
+    "CreateDocSuccess": "Upload document successful!"
   },
   "Warning": {
     "ConfirmLogout": "Are you sure you want to log out?"

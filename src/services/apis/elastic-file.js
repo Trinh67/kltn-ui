@@ -1,4 +1,6 @@
 import axios from 'axios';
+
+import { t } from 'i18next';
 import { Noti } from '~/helpers';
 
 const apiUrl = 'http://127.0.0.1:8000/api/v1/';
@@ -31,7 +33,7 @@ const searchFiles = async (Parameters) => {
   const File = axios
     .post(ApiUrl + '/', FormData)
     .then((response) => {
-      Noti.SuccessMessage("Upload document successful!")
+      Noti.SuccessMessage(t('Messages.CreateDocSuccess'))
       return response;
     })
     .catch((err) => {
