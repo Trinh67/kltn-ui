@@ -46,7 +46,10 @@
     "CreateDocSuccess": "Upload document successful!"
   },
   "Warning": {
-    "ConfirmLogout": "Are you sure you want to log out?"
+    "ConfirmLogout": "Are you sure you want to log out?",
+    "ConfirmDeleteFile": "Are you sure you want to delete this document?",
+    "ConfirmApprovedFile": "Are you sure you want to approved this document?",
+    "ConfirmRefuseFile": "Are you sure you want to refuse approved this document?"
   },
   "UploadForm": {
     "DraggerTitle": "Click or drag file to this area to upload",

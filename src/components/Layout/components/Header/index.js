@@ -1,5 +1,7 @@
 import React from 'react';
 import cookies from 'js-cookies';
+import Tippy from '@tippyjs/react';
+import 'tippy.js/dist/tippy.css';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -11,20 +13,19 @@ import {
   faSignOut,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
-import Tippy from '@tippyjs/react';
-import 'tippy.js/dist/tippy.css';
 
-import Button from '~/components/Button';
-import styles from './Header.module.scss';
-import images from '~/assets/images';
-import Menu from '~/components/Popper/Menu';
-import { NotificationIcon, MessageIcon, UploadIcon } from '~/components/Icons';
-import Image from '~/components/Image';
+import { Modal } from 'antd';
 import Search from '../Search';
 import { t } from '~/helpers/i18n';
+import images from '~/assets/images';
+import Image from '~/components/Image';
+import Button from '~/components/Button';
+import styles from './Header.module.scss';
+import { browserHistory } from '~/helpers';
+import Menu from '~/components/Popper/Menu';
 import localizationHelpers from '~/helpers/localization';
 import localizationConstants from '~/constants/localization';
-import { Modal } from 'antd';
+import { NotificationIcon, MessageIcon, UploadIcon } from '~/components/Icons';
 
 const cx = classNames.bind(styles);
 
@@ -80,6 +81,7 @@ function Header() {
           onOk: () => {
             cookies.removeItem('token');
             localStorage.setItem('currentUser', JSON.stringify(null));
+            browserHistory.push("/");
             window.location.reload();
           },
         });
@@ -103,7 +105,6 @@ function Header() {
     {
       icon: <FontAwesomeIcon icon={faSignOut} />,
       title: t('MenuActions.LogOut'),
-      to: '/',
       separate: true,
       type: 'logout',
     },

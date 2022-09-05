@@ -46,7 +46,10 @@
     "CreateDocSuccess": "Tải lên tài liệu thành công!"
   },
   "Warning": {
-    "ConfirmLogout": "Bạn chắc chắn muốn đăng xuất?"
+    "ConfirmLogout": "Bạn chắc chắn muốn đăng xuất?",
+    "ConfirmDeleteFile": "Bạn chắc chắn muốn xóa tài liệu này?",
+    "ConfirmApprovedFile": "Bạn chắc chắn phê duyệt tài liệu này?",
+    "ConfirmRefuseFile": "Bạn chắc chắn từ chối phê duyệt tài liệu này?"
   },
   "UploadForm": {
     "DraggerTitle": "Click chuột hoặc kéo tệp cần tải vào vùng này để tải tệp lên",

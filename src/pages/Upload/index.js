@@ -1,4 +1,4 @@
-import cookies from "js-cookies";
+import cookies from 'js-cookies';
 import classNames from 'classnames/bind';
 import { useState, useEffect } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
@@ -57,7 +57,7 @@ function UploadFile() {
     setCategories(result);
   };
 
-  const language = localStorage.getItem(LOCALIZATION) === REGIONS.vi.key
+  const language = localStorage.getItem(LOCALIZATION) === REGIONS.vi.key;
 
   useEffect(() => {
     initial();
@@ -67,10 +67,10 @@ function UploadFile() {
     console.log(value);
   };
   const onFinish = async (values) => {
-    setUploading(true)
-    const res = await elasticServices.createFile(values)
-    setUploading(false)
-    if (res.code === 200){
+    setUploading(true);
+    const res = await elasticServices.createFile(values);
+    setUploading(false);
+    if (res.code === 200) {
       form.resetFields();
     }
   };
@@ -79,105 +79,110 @@ function UploadFile() {
   };
 
   return (
-    <div className={cx('wrapper')}>
-      <Spin tip="Uploading..." spinning={uploading}>
-        <div className={cx('form-title')}>{t('UploadForm.TitleForm')}</div>
-        <div className={cx('wrapper-form')}>
-          <div className={cx('form-upload')}>
-            <div className={cx('dragger')}>
-              <Upload.Dragger {...props}>
-                <p className="ant-upload-drag-icon">
-                  <InboxOutlined />
-                </p>
-                <p className="ant-upload-text">{t('UploadForm.DraggerTitle')}</p>
-                <p className="ant-upload-hint">{t('UploadForm.DraggerNote')}</p>
-              </Upload.Dragger>
+    <>
+      <div className={cx('wrapper')}>
+        <Spin tip="Uploading..." spinning={uploading}>
+          <div className={cx('form-title')}>{t('UploadForm.TitleForm')}</div>
+          <div className={cx('wrapper-form')}>
+            <div className={cx('form-upload')}>
+              <div className={cx('dragger')}>
+                <Upload.Dragger {...props}>
+                  <p className="ant-upload-drag-icon">
+                    <InboxOutlined />
+                  </p>
+                  <p className="ant-upload-text">{t('UploadForm.DraggerTitle')}</p>
+                  <p className="ant-upload-hint">{t('UploadForm.DraggerNote')}</p>
+                </Upload.Dragger>
+              </div>
+            </div>
+            <div className={cx('form-text')}>
+              <Form {...layout} form={form} layout="vertical" name="control-ref" onFinish={onFinish}>
+                <Form.Item
+                  name="fileTitle"
+                  label={t('UploadForm.TitleFile')}
+                  rules={[
+                    {
+                      required: true,
+                    },
+                    {
+                      type: 'string',
+                      min: 10,
+                    },
+                  ]}
+                >
+                  <Input.TextArea placeholder={t('UploadForm.EnterTitleFile')} showCount maxLength={100} rows={2} />
+                </Form.Item>
+                <Form.Item name="categoryId" label={t('UploadForm.CategoryFile')} rules={[{ required: true }]}>
+                  <Select
+                    placeholder={t('UploadForm.SelectCategoryFile')}
+                    onChange={onCategoryChange}
+                    allowClear
+                    showSearch={true}
+                    optionFilterProp="children"
+                    filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+                  >
+                    {!!categories.length > 0 &&
+                      language &&
+                      categories.map((category) => (
+                        <Select.Option value={category.id} key={category.id}>
+                          {category.nameVi}
+                        </Select.Option>
+                      ))}
+                    {!!categories.length > 0 &&
+                      !language &&
+                      categories.map((category) => (
+                        <Select.Option value={category.id} key={category.id}>
+                          {category.nameEn}
+                        </Select.Option>
+                      ))}
+                    <Select.Option value="-1" key="-1">
+                      {t('UploadForm.Options.Other')}
+                    </Select.Option>
+                  </Select>
+                </Form.Item>
+                <Form.Item
+                  noStyle
+                  shouldUpdate={(prevValues, currentValues) => prevValues.category !== currentValues.category}
+                >
+                  {({ getFieldValue }) =>
+                    getFieldValue('category') === '-1' ? (
+                      <Form.Item name="addCategory" label={t('UploadForm.AddCategoryFile')}>
+                        <Input placeholder={t('UploadForm.EnterAddCategoryFile')} />
+                      </Form.Item>
+                    ) : null
+                  }
+                </Form.Item>
+                <Form.Item
+                  name="fileDescription"
+                  label={t('UploadForm.Description')}
+                  rules={[
+                    { required: true },
+                    {
+                      type: 'string',
+                      min: 20,
+                    },
+                  ]}
+                >
+                  <Input.TextArea placeholder={t('UploadForm.EnterDescription')} showCount maxLength={300} rows={5} />
+                </Form.Item>
+                <Form.Item name="filePath" hidden={true} initialValue="file-demo.pdf"></Form.Item>
+                <Form.Item {...tailLayout}>
+                  <Button size="large" type="primary" htmlType="submit">
+                    {t('UploadForm.Actions.Submit')}
+                  </Button>
+                  <Button size="large" htmlType="button" onClick={onReset} className={cx('button-reset')}>
+                    {t('UploadForm.Actions.Reset')}
+                  </Button>
+                </Form.Item>
+              </Form>
             </div>
           </div>
-          <div className={cx('form-text')}>
-            <Form {...layout} form={form} layout="vertical" name="control-ref" onFinish={onFinish}>
-              <Form.Item
-                name="fileTitle"
-                label={t('UploadForm.TitleFile')}
-                rules={[
-                  {
-                    required: true,
-                  },
-                  {
-                    type: 'string',
-                    min: 10,
-                  },
-                ]}
-              >
-                <Input.TextArea placeholder={t('UploadForm.EnterTitleFile')} showCount maxLength={100} rows={2} />
-              </Form.Item>
-              <Form.Item name="categoryId" label={t('UploadForm.CategoryFile')} rules={[{ required: true }]}>
-                <Select
-                  placeholder={t('UploadForm.SelectCategoryFile')}
-                  onChange={onCategoryChange}
-                  allowClear
-                  showSearch={true}
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
-                  }
-                >
-                  {!!categories.length > 0 && language &&
-                    categories.map((category) => (
-                      <Select.Option value={category.id} key={category.id}>
-                        {category.nameVi}
-                      </Select.Option>
-                    ))}
-                  {!!categories.length > 0 && !language &&
-                    categories.map((category) => (
-                      <Select.Option value={category.id} key={category.id}>
-                        {category.nameEn}
-                      </Select.Option>
-                    ))}
-                  <Select.Option value="-1" key="-1">
-                    {t('UploadForm.Options.Other')}
-                  </Select.Option>
-                </Select>
-              </Form.Item>
-              <Form.Item
-                noStyle
-                shouldUpdate={(prevValues, currentValues) => prevValues.category !== currentValues.category}
-              >
-                {({ getFieldValue }) =>
-                  getFieldValue('category') === '-1' ? (
-                    <Form.Item name="addCategory" label={t('UploadForm.AddCategoryFile')}>
-                      <Input placeholder={t('UploadForm.EnterAddCategoryFile')} />
-                    </Form.Item>
-                  ) : null
-                }
-              </Form.Item>
-              <Form.Item
-                name="fileDescription"
-                label={t('UploadForm.Description')}
-                rules={[
-                  { required: true },
-                  {
-                    type: 'string',
-                    min: 20,
-                  },
-                ]}
-              >
-                <Input.TextArea placeholder={t('UploadForm.EnterDescription')} showCount maxLength={300} rows={5} />
-              </Form.Item>
-              <Form.Item name="filePath" hidden={true} initialValue="file-demo.pdf"></Form.Item>
-              <Form.Item {...tailLayout}>
-                <Button size="large" type="primary" htmlType="submit">
-                  {t('UploadForm.Actions.Submit')}
-                </Button>
-                <Button size="large" htmlType="button" onClick={onReset} className={cx('button-reset')}>
-                  {t('UploadForm.Actions.Reset')}
-                </Button>
-              </Form.Item>
-            </Form>
-          </div>
-        </div>
-      </Spin>
-    </div>
+        </Spin>
+      </div>
+      <div style={{ textAlign: 'center', fontSize: '2rem', width: '100%', fontWeight: 'bold', position: 'fixed', bottom: '20px'}}>
+        University of Engineering and Technology
+      </div>
+    </>
   );
 }
 
