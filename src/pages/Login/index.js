@@ -1,15 +1,16 @@
+import cookies from "js-cookies";
+import { Col, Image, Row } from 'antd';
 import React, { useEffect } from 'react';
 import classNames from 'classnames/bind';
 import FacebookLogin from 'react-facebook-login';
-import jwt_decode from 'jwt-decode'
-import { Col, Image, Row } from 'antd';
-import styles from './Login.module.scss';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF } from '@fortawesome/free-brands-svg-icons'
-import { browserHistory } from '~/helpers';
-import images from '~/assets/images';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import { t } from 'i18next';
+import images from '~/assets/images';
+import styles from './Login.module.scss';
+import { authService } from '~/services';
+import { browserHistory } from '~/helpers';
 
 const cx = classNames.bind(styles);
 
@@ -18,15 +19,11 @@ const REACT_APP_GOOGLE_ID = '162098319608-buveos2g614scesufvvqrqqke3nml452.apps.
 var currentUser = {}
 
 function Login() {
-  const responseGoogle = (response) => {
-    var user = jwt_decode(response.credential);
-    currentUser = {
-      'name': user.name,
-      'imageUrl': user.picture,
-      'email': user.email,
-      'user_id': user.sub,
-      'source': 'google'
-    }
+  const responseGoogle = async (response) => {
+    const result = await authService.loginGoogle({'tokenId': response.credential});
+    cookies.removeItem('token')
+    cookies.setItem('token', result, { path: '/' });
+    const currentUser = await authService.getCurrentUser()
     localStorage.setItem('currentUser', JSON.stringify(currentUser))
     browserHistory.push("/");
     window.location.reload()
@@ -34,15 +31,11 @@ function Login() {
 
   const componentClicked = () => {};
 
-  const responseFacebook = (response) => {
-    var user = response;
-    currentUser = {
-      'name': user.name,
-      'imageUrl': user.picture.data.url,
-      'email': user.email,
-      'user_id': user.id,
-      'source': 'facebook'
-    }
+  const responseFacebook = async (response) => {
+    const result = await authService.loginFacebook({'tokenId': response.accessToken});
+    cookies.removeItem('token')
+    cookies.setItem('token', result, { path: '/' });
+    const currentUser = await authService.getCurrentUser()
     localStorage.setItem('currentUser', JSON.stringify(currentUser))
     browserHistory.push("/");
     window.location.reload()
@@ -80,7 +73,7 @@ function Login() {
             onClick={componentClicked}
             callback={responseFacebook}
             cssClass={cx('btnFacebook')}
-            icon={<FontAwesomeIcon icon={faFacebookF} style={{'padding-right': '20px'}} />}
+            icon={<FontAwesomeIcon icon={faFacebookF} style={{'paddingRight': '20px'}} />}
             textButton = {t('LogInFace')}
           />
         </Row>

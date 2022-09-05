@@ -74,7 +74,7 @@ function Search() {
           <PopperWrapper>
             <h4 className={cx('search-title')}>{t('SearchResults.title')}</h4>
             {!!searchResult.length > 0 && searchResult.map((file) => <SearchItem file={file} key={file.id} />)}
-            {!!searchResult.length === 0 && <p>No data</p>}
+            {searchResult.length === 0 && <p>No data</p>}
           </PopperWrapper>
         </div>
       )}

@@ -1,4 +1,6 @@
 import axios from 'axios';
+import cookies from "js-cookies";
+
 import { Noti } from '~/helpers';
 
 const apiUrl = 'http://127.0.0.1:8000/api/v1/';
@@ -10,8 +12,10 @@ const ApiUrl = apiUrl + 'file';
  * @returns File name
  */
  const uploadFile = async (FileData) => {
+  console.log(FileData)
+  const headers = { headers: { Authorization: `Bearer ${cookies.getItem('token')}` } };
   const File = axios
-    .post(ApiUrl + '/upload-file', FileData)
+    .post(ApiUrl + '/upload-file', FileData, headers)
     .then((response) => {
       return response;
     })

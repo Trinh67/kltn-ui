@@ -1,3 +1,4 @@
+import cookies from "js-cookies";
 import classNames from 'classnames/bind';
 import { useState, useEffect } from 'react';
 import { InboxOutlined } from '@ant-design/icons';
@@ -31,6 +32,7 @@ function UploadFile() {
     name: 'upload_file_request',
     mltiple: false,
     action: 'http://127.0.0.1:8000/api/v1/file/upload-file',
+    headers: { Authorization: `Bearer ${cookies.getItem('token')}` },
     maxCount: 1,
     onChange(info) {
       const { status } = info.file;

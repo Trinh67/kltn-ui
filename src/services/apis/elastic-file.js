@@ -1,4 +1,5 @@
 import axios from 'axios';
+import cookies from "js-cookies";
 
 import { t } from 'i18next';
 import { Noti } from '~/helpers';
@@ -30,8 +31,9 @@ const searchFiles = async (Parameters) => {
  * @returns File Id
  */
  const createFile = async (FormData) => {
+  const headers = { headers: { Authorization: `Bearer ${cookies.getItem('token')}` } };
   const File = axios
-    .post(ApiUrl + '/', FormData)
+    .post(ApiUrl + '/', FormData, headers)
     .then((response) => {
       Noti.SuccessMessage(t('Messages.CreateDocSuccess'))
       return response;

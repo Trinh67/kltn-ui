@@ -1,14 +1,15 @@
 import React from 'react';
+import cookies from 'js-cookies';
 import classNames from 'classnames/bind';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faCircleQuestion,
-    faEarthAsia,
-    faEllipsisVertical,
-    faChartLine,
-    faSignOut,
-    faUser,
+  faCircleQuestion,
+  faEarthAsia,
+  faEllipsisVertical,
+  faChartLine,
+  faSignOut,
+  faUser,
 } from '@fortawesome/free-solid-svg-icons';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
@@ -29,136 +30,139 @@ const cx = classNames.bind(styles);
 
 const { REGIONS } = localizationConstants;
 const MENU_ITEMS = [
-    {
-        icon: <FontAwesomeIcon icon={faEarthAsia} />,
-        title: t('MenuActions.DisplayLanguage'),
-        children: {
-            title: t('Languages'),
-            data: [
-                {
-                    type: 'language',
-                    key: REGIONS.vi.key,
-                    title: t(REGIONS.vi.name),
-                    leftImg: REGIONS.vi.flag,
-                    flag: true
-                },
-                {
-                    type: 'language',
-                    key: REGIONS.en.key,
-                    title: t(REGIONS.en.name),
-                    leftImg: REGIONS.en.flag,
-                    flag: true,
-                },
-            ],
+  {
+    icon: <FontAwesomeIcon icon={faEarthAsia} />,
+    title: t('MenuActions.DisplayLanguage'),
+    children: {
+      title: t('Languages'),
+      data: [
+        {
+          type: 'language',
+          key: REGIONS.vi.key,
+          title: t(REGIONS.vi.name),
+          leftImg: REGIONS.vi.flag,
+          flag: true,
         },
+        {
+          type: 'language',
+          key: REGIONS.en.key,
+          title: t(REGIONS.en.name),
+          leftImg: REGIONS.en.flag,
+          flag: true,
+        },
+      ],
     },
-    {
-        icon: <FontAwesomeIcon icon={faCircleQuestion} />,
-        title: t('MenuActions.Help'),
-        to: '/help',
-    },
+  },
+  {
+    icon: <FontAwesomeIcon icon={faCircleQuestion} />,
+    title: t('MenuActions.Help'),
+    to: '/help',
+  },
 ];
 
 function Header() {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
 
-    // Handle logic
-    const handleMenuChange = (menuItem) => {
-        switch (menuItem.type) {
-            case 'language':
-                // Handle change language
-                localizationHelpers.changeLanguage(menuItem.key)
-                break;
-            case 'logout':
-                // Handle user logout
-                Modal.confirm({
-                    title: t('Warning.ConfirmLogout'),
-                    okText: t('Actions.Confirm'),
-                    cancelText: t('Actions.Cancel'),
-                    okType: 'primary',
-                    onOk: () => {
-                        localStorage.setItem('currentUser', JSON.stringify(null))
-                        window.location.reload()
-                    },
-                  })
-                break;
-            default:
-        }
-    };
+  // Handle logic
+  const handleMenuChange = (menuItem) => {
+    switch (menuItem.type) {
+      case 'language':
+        // Handle change language
+        localizationHelpers.changeLanguage(menuItem.key);
+        break;
+      case 'logout':
+        // Handle user logout
+        Modal.confirm({
+          title: t('Warning.ConfirmLogout'),
+          okText: t('Actions.Confirm'),
+          cancelText: t('Actions.Cancel'),
+          okType: 'primary',
+          onOk: () => {
+            cookies.removeItem('token');
+            localStorage.setItem('currentUser', JSON.stringify(null));
+            window.location.reload();
+          },
+        });
+        break;
+      default:
+    }
+  };
 
-    const userMenu = [
-        {
-            icon: <FontAwesomeIcon icon={faUser} />,
-            title: t('MenuActions.ViewProfile'),
-            to: '/profile',
-        },
-        {
-            icon: <FontAwesomeIcon icon={faChartLine} />,
-            title: t('MenuActions.FileManager'),
-            to: '/manager',
-        },
-        ...MENU_ITEMS,
-        {
-            icon: <FontAwesomeIcon icon={faSignOut} />,
-            title: t('MenuActions.LogOut'),
-            to: '/',
-            separate: true,
-            type: 'logout'
-        },
-    ];
+  const userMenu = [
+    {
+      icon: <FontAwesomeIcon icon={faUser} />,
+      title: t('MenuActions.ViewProfile'),
+      to: '/profile',
+    },
+    {
+      icon: <FontAwesomeIcon icon={faChartLine} />,
+      title: t('MenuActions.FileManager'),
+      to: '/manager',
+    },
+    ...MENU_ITEMS,
+    {
+      icon: <FontAwesomeIcon icon={faSignOut} />,
+      title: t('MenuActions.LogOut'),
+      to: '/',
+      separate: true,
+      type: 'logout',
+    },
+  ];
 
-    return (
-        <header className={cx('wrapper')}>
-            <div className={cx('inner')}>
-                <Link className={cx('page-name')} to="/">
-                    <img className={cx('logo-fit')} src={images.logo} alt="FIT" />
-                    <h2 className={cx('name-page')}>KLTN</h2>
+  return (
+    <header className={cx('wrapper')}>
+      <div className={cx('inner')}>
+        <Link className={cx('page-name')} to="/">
+          <img className={cx('logo-fit')} src={images.logo} alt="FIT" />
+          <h2 className={cx('name-page')}>KLTN</h2>
+        </Link>
+        <Search />
+        <div className={cx('actions')}>
+          {currentUser ? (
+            <>
+              <Tippy delay={[0, 50]} content={t('HeaderActions.UploadFile')} placement="bottom">
+                <Link to="/upload">
+                  <button className={cx('action-btn')}>
+                    <UploadIcon />
+                  </button>
                 </Link>
-                <Search />
-                <div className={cx('actions')}>
-                    {currentUser ? (
-                        <>
-                            <Tippy delay={[0, 50]} content={t('HeaderActions.UploadFile')} placement="bottom">
-                                <Link to="/upload">
-                                    <button className={cx('action-btn')}>
-                                        <UploadIcon />
-                                    </button>
-                                </Link>
-                            </Tippy>
-                            <Tippy delay={[0, 50]} content={t('HeaderActions.Message')} placement="bottom">
-                                <button className={cx('action-btn')}>
-                                    <MessageIcon />
-                                    <span className={cx('badge')}>2</span>
-                                </button>
-                            </Tippy>
-                            <Tippy delay={[0, 50]} content={t('HeaderActions.Notification')} placement="bottom">
-                                <button className={cx('action-btn')}>
-                                    <NotificationIcon />
-                                    <span className={cx('badge')}>5</span>
-                                </button>
-                            </Tippy>
-                        </>
-                    ) : (
-                        <Link to='/login'><Button primary>{t('MenuActions.LogIn')}</Button></Link>
-                    )}
+              </Tippy>
+              <Tippy delay={[0, 50]} content={t('HeaderActions.Message')} placement="bottom">
+                <button className={cx('action-btn')}>
+                  <MessageIcon />
+                  <span className={cx('badge')}>2</span>
+                </button>
+              </Tippy>
+              <Tippy delay={[0, 50]} content={t('HeaderActions.Notification')} placement="bottom">
+                <button className={cx('action-btn')}>
+                  <NotificationIcon />
+                  <span className={cx('badge')}>5</span>
+                </button>
+              </Tippy>
+            </>
+          ) : (
+            <Link to="/login">
+              <Button primary>{t('MenuActions.LogIn')}</Button>
+            </Link>
+          )}
 
-                    <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
-                        {currentUser ? (
-                            <Image
-                                className={cx('user-avatar')}
-                                src={currentUser.imageUrl ? currentUser.imageUrl : images.logo}
-                                alt={currentUser.name}
-                            />
-                        ) : (
-                            <button className={cx('more-btn')}>
-                                <FontAwesomeIcon icon={faEllipsisVertical} />
-                            </button>
-                        )}
-                    </Menu>
-                </div>
-            </div>
-        </header>
-    );
+          <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
+            {currentUser ? (
+              <Image
+                className={cx('user-avatar')}
+                src={currentUser.avatarUrl ? currentUser.avatarUrl : images.logo}
+                alt={currentUser.name}
+              />
+            ) : (
+              <button className={cx('more-btn')}>
+                <FontAwesomeIcon icon={faEllipsisVertical} />
+              </button>
+            )}
+          </Menu>
+        </div>
+      </div>
+    </header>
+  );
 }
 
 export default Header;
