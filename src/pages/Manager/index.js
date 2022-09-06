@@ -74,11 +74,26 @@ const FileManager = () => {
     console.log(key);
 
     switch (current) {
+      case 'uploaded':
+        setColums(uploadedColumns);
+        break;
+      case 'favorite':
+        setColums(favoriteColumns);
+        break;
+      case 'share':
+        setColums(sharedColumns);
+        break;
       case 'processing':
         setColums(processingColumns);
         break;
       case 'draft':
         setColums(draftColumns);
+        break;
+      case 'refuse':
+        setColums(refuseColumns);
+        break;
+      case 'approved':
+        setColums(approvedColumns);
         break;
       default:
         setColums(uploadedColumns);
@@ -112,8 +127,21 @@ const FileManager = () => {
     });
   };
 
+  const DislikeFile = async (id) => {
+    // Handle user dislike file
+    Modal.confirm({
+      title: t('Warning.ConfirmDislikeFile'),
+      okText: t('Actions.Confirm'),
+      cancelText: t('Actions.Cancel'),
+      okType: 'primary',
+      onOk: () => {
+        console.log(id);
+      },
+    });
+  };
+
   const ApprovedFile = async (id) => {
-    // Handle user delete file
+    // Handle user approved document
     Modal.confirm({
       title: t('Warning.ConfirmApprovedFile'),
       okText: t('Actions.Confirm'),
@@ -146,10 +174,17 @@ const FileManager = () => {
       render: (value, item, index) => <p>{(page - 1) * 10 + index + 1}</p>,
     },
     {
-      title: 'Title',
+      title: 'Tiêu đề',
       dataIndex: 'fileTitle',
       key: 'fileTitle',
-      width: '30%',
+      width: '20%',
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: 'Tác giả',
+      dataIndex: 'authorName',
+      key: 'authorName',
+      width: '10%',
       render: (text) => <a>{text}</a>,
     },
     {
@@ -216,6 +251,159 @@ const FileManager = () => {
     },
   ];
 
+  const favoriteColumns = [
+    {
+      title: 'STT',
+      key: 'index',
+      width: '5%',
+      render: (value, item, index) => <p>{(page - 1) * 10 + index + 1}</p>,
+    },
+    {
+      title: 'Tiêu đề',
+      dataIndex: 'fileTitle',
+      key: 'fileTitle',
+      width: '20%',
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: 'Tác giả',
+      dataIndex: 'authorName',
+      key: 'authorName',
+      width: '10%',
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: 'Danh mục',
+      dataIndex: 'categoryVi',
+      key: 'categoryVi',
+      width: '15%',
+    },
+    {
+      title: 'Ngày đăng',
+      dataIndex: 'updatedAt',
+      key: 'updatedAt',
+      width: '20%',
+      align: 'center',
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      key: 'status',
+      width: '15%',
+      align: 'center',
+      render: (status) => {
+        let color, text;
+        if (status === 0) {
+          color = 'warning';
+          text = 'processing';
+        }
+        if (status === 1) {
+          color = 'geekblue';
+          text = 'Wait to approve';
+        }
+        if (status === 2) {
+          color = 'volcano';
+          text = 'Refuse approved';
+        }
+        if (status === 3) {
+          color = 'success';
+          text = 'Approved';
+        }
+
+        return (
+          <Tag color={color} key={status} style={{ fontWeight: 'bold' }}>
+            {text.toUpperCase()}
+          </Tag>
+        );
+      },
+    },
+    {
+      title: 'Hành động',
+      key: 'action',
+      width: '10%',
+      align: 'center',
+      render: (value, item) => (
+        <Button
+          type="danger"
+          shape="round"
+          icon={<DeleteOutlined />}
+          onClick={(e) => DislikeFile(item.id)}
+          size="default"
+        >
+          Bỏ thích
+        </Button>
+      ),
+    },
+  ];
+
+  const sharedColumns = [
+    {
+      title: 'STT',
+      key: 'index',
+      width: '5%',
+      render: (value, item, index) => <p>{(page - 1) * 10 + index + 1}</p>,
+    },
+    {
+      title: 'Tiêu đề',
+      dataIndex: 'fileTitle',
+      key: 'fileTitle',
+      width: '25%',
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: 'Tác giả',
+      dataIndex: 'authorName',
+      key: 'authorName',
+      width: '15%',
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: 'Danh mục',
+      dataIndex: 'categoryVi',
+      key: 'categoryVi',
+      width: '20%',
+    },
+    {
+      title: 'Ngày đăng',
+      dataIndex: 'updatedAt',
+      key: 'updatedAt',
+      width: '20%',
+      align: 'center',
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      key: 'status',
+      width: '15%',
+      align: 'center',
+      render: (status) => {
+        let color, text;
+        if (status === 0) {
+          color = 'warning';
+          text = 'processing';
+        }
+        if (status === 1) {
+          color = 'geekblue';
+          text = 'Wait to approve';
+        }
+        if (status === 2) {
+          color = 'volcano';
+          text = 'Refuse approved';
+        }
+        if (status === 3) {
+          color = 'success';
+          text = 'Approved';
+        }
+
+        return (
+          <Tag color={color} key={status} style={{ fontWeight: 'bold' }}>
+            {text.toUpperCase()}
+          </Tag>
+        );
+      },
+    },
+  ];
+
   const processingColumns = [
     {
       title: 'STT',
@@ -224,10 +412,17 @@ const FileManager = () => {
       render: (value, item, index) => <p>{(page - 1) * 10 + index + 1}</p>,
     },
     {
-      title: 'Title',
+      title: 'Tiêu đề',
       dataIndex: 'fileTitle',
       key: 'fileTitle',
-      width: '30%',
+      width: '25%',
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: 'Tác giả',
+      dataIndex: 'authorName',
+      key: 'authorName',
+      width: '15%',
       render: (text) => <a>{text}</a>,
     },
     {
@@ -285,10 +480,17 @@ const FileManager = () => {
       render: (value, item, index) => <p>{(page - 1) * 10 + index + 1}</p>,
     },
     {
-      title: 'Title',
+      title: 'Tiêu đề',
       dataIndex: 'fileTitle',
       key: 'fileTitle',
-      width: '25%',
+      width: '20%',
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: 'Tác giả',
+      dataIndex: 'authorName',
+      key: 'authorName',
+      width: '10%',
       render: (text) => <a>{text}</a>,
     },
     {
@@ -363,6 +565,76 @@ const FileManager = () => {
           </Button>
         </Space>
       ),
+    },
+  ];
+
+  const refuseColumns = uploadedColumns;
+
+  const approvedColumns = [
+    {
+      title: 'STT',
+      key: 'index',
+      width: '5%',
+      render: (value, item, index) => <p>{(page - 1) * 10 + index + 1}</p>,
+    },
+    {
+      title: 'Tiêu đề',
+      dataIndex: 'fileTitle',
+      key: 'fileTitle',
+      width: '25%',
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: 'Tác giả',
+      dataIndex: 'authorName',
+      key: 'authorName',
+      width: '15%',
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: 'Danh mục',
+      dataIndex: 'categoryVi',
+      key: 'categoryVi',
+      width: '15%',
+    },
+    {
+      title: 'Ngày đăng',
+      dataIndex: 'updatedAt',
+      key: 'updatedAt',
+      width: '20%',
+      align: 'center',
+    },
+    {
+      title: 'Trạng thái',
+      dataIndex: 'status',
+      key: 'status',
+      width: '15%',
+      align: 'center',
+      render: (status) => {
+        let color, text;
+        if (status === 0) {
+          color = 'warning';
+          text = 'processing';
+        }
+        if (status === 1) {
+          color = 'geekblue';
+          text = 'Wait to approve';
+        }
+        if (status === 2) {
+          color = 'volcano';
+          text = 'Refuse approved';
+        }
+        if (status === 3) {
+          color = 'success';
+          text = 'Approved';
+        }
+
+        return (
+          <Tag color={color} key={status} style={{ fontWeight: 'bold' }}>
+            {text.toUpperCase()}
+          </Tag>
+        );
+      },
     },
   ];
 
