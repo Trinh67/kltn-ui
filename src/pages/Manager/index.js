@@ -72,7 +72,6 @@ const FileManager = () => {
 
   const initial = async (key) => {
     console.log(key);
-
     switch (current) {
       case 'uploaded':
         setColums(uploadedColumns);
@@ -111,8 +110,13 @@ const FileManager = () => {
   }, []);
 
   useEffect(() => {
+    setPage(1);
     initial(current);
   }, [current]);
+
+  useEffect(() => {
+    initial(current);
+  }, [page]);
 
   const DeleteFile = async (id) => {
     // Handle user delete file
@@ -652,8 +656,8 @@ const FileManager = () => {
         dataSource={files}
         rowKey="id"
         pagination={{
-          onChange(current) {
-            setPage(current);
+          onChange(page_num) {
+            setPage(page_num);
           },
         }}
         scroll={{
