@@ -1,5 +1,5 @@
 import axios from 'axios';
-import cookies from "js-cookies";
+import cookies from 'js-cookies';
 
 import { Noti } from '~/helpers';
 
@@ -11,8 +11,8 @@ const ApiUrl = apiUrl + 'file';
  * Upload file
  * @returns File name
  */
- const uploadFile = async (FileData) => {
-  console.log(FileData)
+const uploadFile = async (FileData) => {
+  console.log(FileData);
   const headers = { headers: { Authorization: `Bearer ${cookies.getItem('token')}` } };
   const File = axios
     .post(ApiUrl + '/upload-file', FileData, headers)
@@ -31,7 +31,7 @@ const ApiUrl = apiUrl + 'file';
  * Lấy danh sách file
  * @returns Danh sách file
  */
-const getFiles = async () => {
+const getListFiles = async () => {
   const Files = axios
     .get(ApiUrl + '/list-file')
     .then((response) => {
@@ -45,7 +45,32 @@ const getFiles = async () => {
   return res.data;
 };
 
+/**
+ * Lọc danh sách file
+ * @returns Danh sách file
+ */
+const filterFiles = async (type) => {
+  const config = {
+    headers: { Authorization: `Bearer ${cookies.getItem('token')}` },
+    params: {
+      type: type,
+    },
+  };
+  const Files = axios
+    .get(ApiUrl + '/filter-file', config)
+    .then((response) => {
+      return response;
+    })
+    .catch((err) => {
+      Noti.ErrorMessage(err.response.data.message);
+      return err.response;
+    });
+  const res = await Files;
+  return res.data;
+};
+
 export default {
   uploadFile,
-  getFiles,
+  getListFiles,
+  filterFiles,
 };

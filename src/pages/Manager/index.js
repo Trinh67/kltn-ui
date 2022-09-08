@@ -60,7 +60,7 @@ const guestTabs = [
 const FileManager = () => {
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
   const [current, setCurrent] = useState('uploaded');
-  const [colums, setColums] = useState(null);
+  const [columns, setColumns] = useState(null);
 
   const [page, setPage] = useState(1);
 
@@ -72,40 +72,50 @@ const FileManager = () => {
 
   const initial = async (key) => {
     console.log(key);
+    let type = null;
     switch (current) {
-      case 'uploaded':
-        setColums(uploadedColumns);
-        break;
-      case 'favorite':
-        setColums(favoriteColumns);
-        break;
-      case 'share':
-        setColums(sharedColumns);
-        break;
       case 'processing':
-        setColums(processingColumns);
+        type = 0;
+        setColumns(processingColumns);
         break;
       case 'draft':
-        setColums(draftColumns);
+        type = 1;
+        setColumns(draftColumns);
         break;
       case 'refuse':
-        setColums(refuseColumns);
+        type = 2;
+        setColumns(refuseColumns);
         break;
       case 'approved':
-        setColums(approvedColumns);
+        type = 3;
+        setColumns(approvedColumns);
+        break;
+      case 'uploaded':
+        type = 4;
+        setColumns(uploadedColumns);
+        break;
+      case 'favorite':
+        type = 5;
+        setColumns(favoriteColumns);
+        break;
+      case 'share':
+        type = 6;
+        setColumns(sharedColumns);
         break;
       default:
-        setColums(uploadedColumns);
+        type = 4;
+        setColumns(uploadedColumns);
         break;
     }
-    const result = await fileServices.getFiles();
+    const result = await fileServices.filterFiles(type);
     setFiles(result.data.files);
   };
 
   useEffect(() => {
     if (currentUser.email === 'trinhxuantrinh.yd267@gmail.com') {
       setCurrent('processing');
-    }
+    };
+    setPage(1);
     initial(current);
   }, []);
 
@@ -652,7 +662,7 @@ const FileManager = () => {
         style={{ justifyContent: 'center', fontSize: '1.6rem' }}
       />
       <Table
-        columns={colums}
+        columns={columns}
         dataSource={files}
         rowKey="id"
         pagination={{
