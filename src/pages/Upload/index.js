@@ -27,6 +27,7 @@ function UploadFile() {
   const [form] = Form.useForm();
   const [categories, setCategories] = useState([]);
   const [uploading, setUploading] = useState(false);
+  const [languageVi, setLanguageVi] = useState(true);
 
   const props = {
     name: 'upload_file_request',
@@ -57,9 +58,10 @@ function UploadFile() {
     setCategories(result);
   };
 
-  const language = localStorage.getItem(LOCALIZATION) === REGIONS.vi.key;
-
   useEffect(() => {
+    if (!!localStorage.getItem(LOCALIZATION)){
+      setLanguageVi(localStorage.getItem(LOCALIZATION) === REGIONS.vi.key);
+    };
     initial();
   }, []);
 
@@ -122,20 +124,20 @@ function UploadFile() {
                     filterOption={(input, option) => option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                   >
                     {!!categories.length > 0 &&
-                      language &&
+                      languageVi &&
                       categories.map((category) => (
                         <Select.Option value={category.id} key={category.id}>
                           {category.nameVi}
                         </Select.Option>
                       ))}
                     {!!categories.length > 0 &&
-                      !language &&
+                      !languageVi &&
                       categories.map((category) => (
                         <Select.Option value={category.id} key={category.id}>
                           {category.nameEn}
                         </Select.Option>
                       ))}
-                    <Select.Option value="-1" key="-1">
+                    <Select.Option value="12" key="12">
                       {t('UploadForm.Options.Other')}
                     </Select.Option>
                   </Select>
@@ -145,7 +147,7 @@ function UploadFile() {
                   shouldUpdate={(prevValues, currentValues) => prevValues.category !== currentValues.category}
                 >
                   {({ getFieldValue }) =>
-                    getFieldValue('category') === '-1' ? (
+                    getFieldValue('category') === '12' ? (
                       <Form.Item name="addCategory" label={t('UploadForm.AddCategoryFile')}>
                         <Input placeholder={t('UploadForm.EnterAddCategoryFile')} />
                       </Form.Item>

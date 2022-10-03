@@ -43,7 +43,8 @@
     "Successful": "Thành công",
     "Error": "Có lỗi",
     "UploadSuccess": "đã tải lên thành công!",
-    "CreateDocSuccess": "Tải lên tài liệu thành công!"
+    "CreateDocSuccess": "Tải lên tài liệu thành công!",
+    "UpdateStatusDocSuccess": "Cập nhật trạng thái thành công!"
   },
   "Warning": {
     "ConfirmLogout": "Bạn chắc chắn muốn đăng xuất?",

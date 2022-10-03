@@ -61,6 +61,7 @@ const FileManager = () => {
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
   const [current, setCurrent] = useState('uploaded');
   const [columns, setColumns] = useState(null);
+  const [firstLoad, setFirstLoad] = useState(true);
 
   const [page, setPage] = useState(1);
 
@@ -71,7 +72,6 @@ const FileManager = () => {
   const [files, setFiles] = useState([]);
 
   const initial = async (key) => {
-    console.log(key);
     let type = null;
     switch (current) {
       case 'processing':
@@ -111,21 +111,32 @@ const FileManager = () => {
     setFiles(result.data.files);
   };
 
+  const reloadComponent = () => {
+    initial(current);
+  };
+
   useEffect(() => {
     if (currentUser.email === 'trinhxuantrinh.yd267@gmail.com') {
       setCurrent('processing');
-    };
-    setPage(1);
-    initial(current);
+    }
+    if(!firstLoad){
+      setPage(1);
+      initial(current);
+    }
+    setFirstLoad(false);
   }, []);
 
   useEffect(() => {
-    setPage(1);
-    initial(current);
+    if (!firstLoad) {
+      setPage(1);
+      initial(current);
+    }
   }, [current]);
 
   useEffect(() => {
-    initial(current);
+    if (!firstLoad) {
+      initial(current);
+    }
   }, [page]);
 
   const DeleteFile = async (id) => {
@@ -136,7 +147,8 @@ const FileManager = () => {
       cancelText: t('Actions.Cancel'),
       okType: 'primary',
       onOk: () => {
-        console.log(id);
+        fileServices.updateStatusFile({"id": id, "type": -1});
+        setTimeout(reloadComponent, 1200);
       },
     });
   };
@@ -162,20 +174,22 @@ const FileManager = () => {
       cancelText: t('Actions.Cancel'),
       okType: 'primary',
       onOk: () => {
-        console.log(id);
+        fileServices.updateStatusFile({"id": id, "type": 3});
+        setTimeout(reloadComponent, 1200);
       },
     });
   };
 
   const RefuseFile = async (id) => {
-    // Handle user delete file
+    // Handle user refuse file
     Modal.confirm({
       title: t('Warning.ConfirmRefuseFile'),
       okText: t('Actions.Confirm'),
       cancelText: t('Actions.Cancel'),
       okType: 'primary',
       onOk: () => {
-        console.log(id);
+        fileServices.updateStatusFile({"id": id, "type": 2});
+        setTimeout(reloadComponent, 1200);
       },
     });
   };

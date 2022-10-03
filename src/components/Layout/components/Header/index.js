@@ -62,7 +62,7 @@ const MENU_ITEMS = [
 ];
 
 function Header() {
-  const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  const currentUser = !!cookies.getItem('token') ? JSON.parse(localStorage.getItem('currentUser')) : null;
 
   // Handle logic
   const handleMenuChange = (menuItem) => {
@@ -119,7 +119,7 @@ function Header() {
         </Link>
         <Search />
         <div className={cx('actions')}>
-          {currentUser ? (
+          {!!currentUser ? (
             <>
               <Tippy delay={[0, 50]} content={t('HeaderActions.UploadFile')} placement="bottom">
                 <Link to="/upload">
@@ -147,8 +147,8 @@ function Header() {
             </Link>
           )}
 
-          <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
-            {currentUser ? (
+          <Menu items={!!currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
+            {!!currentUser ? (
               <Image
                 className={cx('user-avatar')}
                 src={currentUser.avatarUrl ? currentUser.avatarUrl : images.logo}

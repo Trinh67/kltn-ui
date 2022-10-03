@@ -10,13 +10,11 @@ import GlobalStyles from '~/components/GlobalStyles';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <React.StrictMode>
-      <I18nextProvider i18n={i18n} history={browserHistory}>
-        <GlobalStyles>
-          <App />
-        </GlobalStyles>
-      </I18nextProvider>
-  </React.StrictMode>,
+    <I18nextProvider i18n={i18n} history={browserHistory}>
+      <GlobalStyles>
+        <App />
+      </GlobalStyles>
+    </I18nextProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

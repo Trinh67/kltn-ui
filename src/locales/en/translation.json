@@ -43,7 +43,8 @@
     "Successful": "Successful",
     "Error": "Error",
     "UploadSuccess": "uploaded successfully.",
-    "CreateDocSuccess": "Upload document successful!"
+    "CreateDocSuccess": "Upload document successful!",
+    "UpdateStatusDocSuccess": "Update status document successful!"
   },
   "Warning": {
     "ConfirmLogout": "Are you sure you want to log out?",
