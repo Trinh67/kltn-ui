@@ -14,7 +14,7 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 
-import { Modal } from 'antd';
+import { Dropdown, Modal } from 'antd';
 import Search from '../Search';
 import { t } from '~/helpers/i18n';
 import images from '~/assets/images';
@@ -135,10 +135,12 @@ function Header() {
               {/*  </button>*/}
               {/*</Tippy>*/}
               <Tippy delay={[0, 50]} content={t('HeaderActions.Notification')} placement="bottom">
-                <button className={cx('action-btn')}>
-                  <NotificationIcon />
-                  <span className={cx('badge')}>5</span>
-                </button>
+                <Menu items={userMenu} placement="bottom">
+                  <button className={cx('action-btn')}>
+                    <NotificationIcon />
+                    <span className={cx('badge')}>5</span>
+                  </button>
+                </Menu>
               </Tippy>
             </>
           ) : (
