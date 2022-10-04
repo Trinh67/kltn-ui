@@ -59,7 +59,7 @@ const guestTabs = [
 
 const FileManager = () => {
   const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  const [current, setCurrent] = useState('uploaded');
+  const [current, setCurrent] = useState(null);
   const [columns, setColumns] = useState(null);
   const [firstLoad, setFirstLoad] = useState(true);
 
