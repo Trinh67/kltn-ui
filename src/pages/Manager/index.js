@@ -118,7 +118,7 @@ const FileManager = () => {
   useEffect(() => {
     if (currentUser.email === 'trinhxuantrinh.yd267@gmail.com') {
       setCurrent('processing');
-    }
+    } else setCurrent('uploaded');
     if(!firstLoad){
       setPage(1);
       initial(current);

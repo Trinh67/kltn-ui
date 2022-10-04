@@ -75,7 +75,6 @@ const filterFiles = async (type) => {
  * @returns File name
  */
 const updateStatusFile = async (FileData) => {
-  console.log(FileData);
   const headers = { headers: { Authorization: `Bearer ${cookies.getItem('token')}` } };
   const File = axios
     .post(ApiUrl + '/update-status-file', FileData, headers)

@@ -25,7 +25,7 @@ import { browserHistory } from '~/helpers';
 import Menu from '~/components/Popper/Menu';
 import localizationHelpers from '~/helpers/localization';
 import localizationConstants from '~/constants/localization';
-import { NotificationIcon, MessageIcon, UploadIcon } from '~/components/Icons';
+import { NotificationIcon, UploadIcon } from '~/components/Icons';
 
 const cx = classNames.bind(styles);
 
@@ -128,12 +128,12 @@ function Header() {
                   </button>
                 </Link>
               </Tippy>
-              <Tippy delay={[0, 50]} content={t('HeaderActions.Message')} placement="bottom">
-                <button className={cx('action-btn')}>
-                  <MessageIcon />
-                  <span className={cx('badge')}>2</span>
-                </button>
-              </Tippy>
+              {/*<Tippy delay={[0, 50]} content={t('HeaderActions.Message')} placement="bottom">*/}
+              {/*  <button className={cx('action-btn')}>*/}
+              {/*    <MessageIcon />*/}
+              {/*    <span className={cx('badge')}>2</span>*/}
+              {/*  </button>*/}
+              {/*</Tippy>*/}
               <Tippy delay={[0, 50]} content={t('HeaderActions.Notification')} placement="bottom">
                 <button className={cx('action-btn')}>
                   <NotificationIcon />
