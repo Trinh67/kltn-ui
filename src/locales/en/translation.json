@@ -72,5 +72,20 @@
     "Options": {
       "Other": "Other"
     }
+  },
+  "Profile": {
+    "Attribute": "Attribute",
+    "Information": "Information",
+    "Name": "Name",
+    "Avatar": "Avatar"
+  },
+  "FileStatus": {
+    "Processing": "Processing",
+    "Draft": "Wait to approved",
+    "Approved": "Approved",
+    "Refuse": "Refused",
+    "Delete": "Deleted",
+    "Liked": "Liked",
+    "Shared": "Shared"
   }
 }

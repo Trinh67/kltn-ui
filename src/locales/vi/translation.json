@@ -72,5 +72,20 @@
     "Options": {
       "Other": "Khác"
     }
+  },
+  "Profile": {
+    "Attribute": "Thuộc tính",
+    "Information": "Thông tin",
+    "Name": "Tên hiển thị",
+    "Avatar": "Ảnh đại diện"
+  },
+  "FileStatus": {
+    "Processing": "Đang xử lí",
+    "Draft": "Chờ duyệt",
+    "Approved": "Đã duyệt",
+    "Refuse": "Bị Từ chối",
+    "Delete": "Bị xóa",
+    "Liked": "Đã thích",
+    "Shared": "Được chia sẻ"
   }
 }

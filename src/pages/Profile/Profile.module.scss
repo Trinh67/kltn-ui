@@ -1,6 +1,16 @@
 .wrapper {
+    width: 100%;
+    height: 100%;
+}
+
+.chart {
     width: 800px;
     height: 500px;
     margin: 2.5% 5% 0 5%;
     box-shadow: 5px 5px 10px 10px #ccc;
+}
+
+.profile {
+    width: 30%;
+    margin: 2.5% 5% 0 5%;
 }

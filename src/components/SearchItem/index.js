@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faUser, faCalendarCheck, faCircleDown, faListAlt } from '@fortawesome/free-regular-svg-icons';
+import { faEye, faUser, faCalendarCheck, faListAlt } from '@fortawesome/free-regular-svg-icons';
 
 import { t } from 'i18next';
 import images from '~/assets/images';
@@ -67,10 +67,10 @@ function SearchItem(file) {
             <FontAwesomeIcon icon={faCalendarCheck} />
             <span> {fileDetail.updatedAt} </span>
           </div>
-          <div className={cx('download')}>
-            <FontAwesomeIcon icon={faCircleDown} />
-            <span> {fileDetail.downloads} </span>
-          </div>
+          {/*<div className={cx('download')}>*/}
+          {/*  <FontAwesomeIcon icon={faCircleDown} />*/}
+          {/*  <span> {fileDetail.downloads} </span>*/}
+          {/*</div>*/}
           <div className={cx('category')}>
             <FontAwesomeIcon icon={faListAlt} />
             <span> {category} </span>
