@@ -44,7 +44,13 @@
     "Error": "Có lỗi",
     "UploadSuccess": "đã tải lên thành công!",
     "CreateDocSuccess": "Tải lên tài liệu thành công!",
-    "UpdateStatusDocSuccess": "Cập nhật trạng thái thành công!"
+    "UpdateStatusDocSuccess": "Cập nhật trạng thái thành công!",
+    "LikeDocSuccess": "Thêm vào danh sách yêu thích thành công!",
+    "RemoveLikeSuccess": "Bỏ yêu thích thành công!",
+    "ShareDocSuccess": "Chia sẻ tài liệu thành công!",
+    "RemoveShareSuccess": "Bỏ chia sẻ tài liệu thành công!",
+    "NotFound": "Xin lỗi, trang không tồn tại hoặc bạn cần đăng nhập trước đó!",
+    "BackToHome": "Về trang chủ"
   },
   "Warning": {
     "ConfirmLogout": "Bạn chắc chắn muốn đăng xuất?",
@@ -87,5 +93,17 @@
     "Delete": "Bị xóa",
     "Liked": "Đã thích",
     "Shared": "Được chia sẻ"
+  },
+  "Pagination": {
+    "Total": "Tổng số",
+    "Items": "tài liệu"
+  },
+  "Modal": {
+    "ApproveDocument": "Phê duyệt tài liệu",
+    "GoogleDriverId": "Google Driver Id",
+    "EnterGoogleDriverId": "Nhập Google Driver Id của tài liệu",
+    "RefuseDocument": "Từ chối phê duyệt tài liệu",
+    "Reason": "Lí do từ chối phê duyệt tài liệu",
+    "EnterReason": "NHập lí do từ chối phê duyệt"
   }
 }

@@ -14,7 +14,7 @@ import {
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
 
-import { Dropdown, Modal } from 'antd';
+import { Modal } from 'antd';
 import Search from '../Search';
 import { t } from '~/helpers/i18n';
 import images from '~/assets/images';

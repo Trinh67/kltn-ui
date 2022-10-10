@@ -12,6 +12,7 @@ import Image from '~/components/Image';
 import styles from './DocumentDetail.module.scss';
 import localStorageConstants from '~/constants/localStorage';
 import localizationConstants from '~/constants/localization';
+import cookies from 'js-cookies';
 
 const { LOCALIZATION } = localStorageConstants;
 const { REGIONS } = localizationConstants;
@@ -25,6 +26,7 @@ function DocumentDetail() {
   const { state } = useLocation();
   let fileDetail = state.file;
   let imageDetail, srcDocument, exportDocument;
+  const currentUser = !!cookies.getItem('token') ? JSON.parse(localStorage.getItem('currentUser')) : null;
 
   switch (fileDetail.type) {
     case 'pdf':
@@ -100,9 +102,10 @@ function DocumentDetail() {
           <Button icon={<DownloadOutlined />} href={exportDocument}>
             Download
           </Button>
-          <Button type='primary' icon={<LikeOutlined />}>
-            Like
-          </Button>
+          {!!currentUser ? (
+            <Button type='primary' icon={<LikeOutlined />}>
+              Like
+            </Button>) : (<></>)}
         </div>
       </div>
     </>

@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { Menu, Button, Table, Tag, Modal, Space } from 'antd';
+import { Menu, Button, Table, Tag, Modal, Space, Input } from 'antd';
 import { useState, useEffect } from 'react';
 import {
   CloudUploadOutlined,
@@ -9,11 +9,14 @@ import {
   DislikeOutlined,
   Loading3QuartersOutlined,
   CloudSyncOutlined,
+  CloseCircleOutlined,
+  SendOutlined,
 } from '@ant-design/icons';
 
 import { t } from '~/helpers/i18n';
 import { fileServices } from '~/services';
 import styles from './Manager.module.scss';
+import { CustomModal } from '~/components/Modal'
 
 const cx = classNames.bind(styles);
 
@@ -62,6 +65,14 @@ const FileManager = () => {
   const [current, setCurrent] = useState(null);
   const [columns, setColumns] = useState(null);
   const [firstLoad, setFirstLoad] = useState(true);
+  const [fileId, setFieldId] = useState(null);
+
+  // Modal Approve
+  const [showApprovedModal, setShowApprovedModal] = useState(false);
+  const [googleDriverId, setGoogleDriverId] = useState("");
+  // Modal Refuse
+  const [showRefuseModal, setShowRefuseModal] = useState(false);
+  const [refuseReason, setRefuseReason] = useState("");
 
   const [page, setPage] = useState(1);
 
@@ -174,8 +185,8 @@ const FileManager = () => {
       cancelText: t('Actions.Cancel'),
       okType: 'primary',
       onOk: () => {
-        fileServices.updateStatusFile({"id": id, "type": 3});
-        setTimeout(reloadComponent, 1200);
+        setFieldId(id);
+        setShowApprovedModal(true);
       },
     });
   };
@@ -188,8 +199,8 @@ const FileManager = () => {
       cancelText: t('Actions.Cancel'),
       okType: 'primary',
       onOk: () => {
-        fileServices.updateStatusFile({"id": id, "type": 2});
-        setTimeout(reloadComponent, 1200);
+        setFieldId(id);
+        setShowRefuseModal(true);
       },
     });
   };
@@ -666,6 +677,31 @@ const FileManager = () => {
     },
   ];
 
+  // Modal Approve function
+  const handleApprovedSubmit = () => {
+    console.log(googleDriverId);
+    // fileServices.updateStatusFile({"id": fileId, "type": 3, "googleDriverId": googleDriverId});
+    // setTimeout(reloadComponent, 1000);
+    setGoogleDriverId("");
+    setShowApprovedModal(false);
+  }
+  const handleApprovedClose = () => {
+    setRefuseReason("");
+    setShowApprovedModal(false);
+  }
+  // Modal Refuse function
+  const handleRefuseSubmit = () => {
+    console.log(refuseReason);
+    // fileServices.updateStatusFile({"id": fileId, "type": 2, "refuseReason": refuseReason});
+    // setTimeout(reloadComponent, 1000);
+    setRefuseReason("");
+    setShowRefuseModal(false);
+  }
+  const handleRefuseClose = () => {
+    setRefuseReason("");
+    setShowRefuseModal(false);
+  }
+
   return (
     <>
       <Menu
@@ -675,6 +711,36 @@ const FileManager = () => {
         items={currentUser.email === 'trinhxuantrinh.yd267@gmail.com' ? adminTabs : guestTabs}
         style={{ justifyContent: 'center', fontSize: '1.6rem' }}
       />
+      <CustomModal show={showApprovedModal}>
+        <div className={cx("modal-header")}>{t('Modal.ApproveDocument')}</div>
+        <div className={cx("modal-body")}>
+          <label>{t('Modal.GoogleDriverId')}</label>
+          <Input placeholder={t('Modal.EnterGoogleDriverId')} onChange={e => setGoogleDriverId(e.target.value)}/>
+        </div>
+        <div className={cx("modal-footer")}>
+          <Button onClick={handleApprovedClose} type="default" icon={<CloseCircleOutlined />}>
+            {t('Actions.Cancel')}
+          </Button>
+          <Button onClick={handleApprovedSubmit} type="primary" icon={<SendOutlined />}>
+            {t('Actions.Confirm')}
+          </Button>
+        </div>
+      </CustomModal>
+      <CustomModal show={showRefuseModal}>
+        <div className={cx("modal-header")}>{t('Modal.RefuseDocument')}</div>
+        <div className={cx("modal-body")}>
+          <label>{t('Modal.Reason')}</label>
+          <Input placeholder={t('Modal.EnterReason')} onChange={e => setRefuseReason(e.target.value)}/>
+        </div>
+        <div className={cx("modal-footer")}>
+          <Button onClick={handleRefuseClose} type="default" icon={<CloseCircleOutlined />}>
+            {t('Actions.Cancel')}
+          </Button>
+          <Button onClick={handleRefuseSubmit} type="primary" icon={<SendOutlined />}>
+            {t('Actions.Confirm')}
+          </Button>
+        </div>
+      </CustomModal>
       <Table
         columns={columns}
         dataSource={files}

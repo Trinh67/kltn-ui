@@ -71,8 +71,8 @@ const filterFiles = async (type) => {
 };
 
 /**
- * Upload file
- * @returns File name
+ * Updatefile
+ * @returns File id
  */
 const updateStatusFile = async (FileData) => {
   const headers = { headers: { Authorization: `Bearer ${cookies.getItem('token')}` } };
@@ -90,9 +90,30 @@ const updateStatusFile = async (FileData) => {
   return res.data;
 };
 
+/**
+ * Actionfile
+ * @returns File id
+ */
+const actionFile = async (FileData) => {
+  const headers = { headers: { Authorization: `Bearer ${cookies.getItem('token')}` } };
+  const File = axios
+    .post(ApiUrl + '/action-file', FileData, headers)
+    .then((response) => {
+      Noti.SuccessMessage(t('Messages.ActionDocSuccess'));
+      return response;
+    })
+    .catch((err) => {
+      Noti.ErrorMessage(err.response.data.message);
+      return err.response;
+    });
+  const res = await File;
+  return res.data;
+};
+
 export default {
   uploadFile,
   getListFiles,
   filterFiles,
   updateStatusFile,
+  actionFile
 };

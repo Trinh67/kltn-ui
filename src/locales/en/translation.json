@@ -44,7 +44,13 @@
     "Error": "Error",
     "UploadSuccess": "uploaded successfully.",
     "CreateDocSuccess": "Upload document successful!",
-    "UpdateStatusDocSuccess": "Update status document successful!"
+    "UpdateStatusDocSuccess": "Update status document successful!",
+    "LikeDocSuccess": "Add to list favorite document successful!",
+    "RemoveLikeSuccess": "Remove like successful!",
+    "ShareDocSuccess": "Share document successful!",
+    "RemoveShareSuccess": "Remove share document successful!",
+    "NotFound": "Sorry, the page you visited does not exist or You must login before!",
+    "BackToHome": "Back to home"
   },
   "Warning": {
     "ConfirmLogout": "Are you sure you want to log out?",
@@ -87,5 +93,17 @@
     "Delete": "Deleted",
     "Liked": "Liked",
     "Shared": "Shared"
+  },
+  "Pagination": {
+    "Total": "Total",
+    "Items": "items"
+  },
+  "Modal": {
+    "ApproveDocument": "Approve Document",
+    "GoogleDriverId": "Google Driver Id",
+    "EnterGoogleDriverId": "Enter Google Driver Id of Document",
+    "RefuseDocument": "Refuse Document",
+    "Reason": "Reason for Refuse Document",
+    "EnterReason": "Enter Reason for Refuse Document"
   }
 }
