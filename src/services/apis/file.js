@@ -79,7 +79,7 @@ const updateStatusFile = async (FileData) => {
   const File = axios
     .post(ApiUrl + '/update-status-file', FileData, headers)
     .then((response) => {
-      Noti.SuccessMessage(t('Messages.UpdateStatusDocSuccess'))
+      Noti.SuccessMessage(t('Messages.UpdateStatusDocSuccess'));
       return response;
     })
     .catch((err) => {
@@ -99,7 +99,15 @@ const actionFile = async (FileData) => {
   const File = axios
     .post(ApiUrl + '/action-file', FileData, headers)
     .then((response) => {
-      Noti.SuccessMessage(t('Messages.ActionDocSuccess'));
+      if (FileData.type === 0){
+        Noti.SuccessMessage(t('Messages.RemoveLikeSuccess'));
+      } else if (FileData.type === 1){
+        Noti.SuccessMessage(t('Messages.LikeDocSuccess'));
+      } else if (FileData.type === 2){
+        Noti.SuccessMessage(t('Messages.RemoveShareSuccess'));
+      } else if (FileData.type === 3){
+        Noti.SuccessMessage(t('Messages.ShareDocSuccess'));
+      }
       return response;
     })
     .catch((err) => {
@@ -110,10 +118,31 @@ const actionFile = async (FileData) => {
   return res.data;
 };
 
+
+/**
+ * Updatefile
+ * @returns File id
+ */
+const getListSharedEmail = async (requestBody) => {
+  const headers = { headers: { Authorization: `Bearer ${cookies.getItem('token')}` } };
+  const Emails = axios
+    .post(ApiUrl + '/shared-list', requestBody, headers)
+    .then((response) => {
+      return response;
+    })
+    .catch((err) => {
+      Noti.ErrorMessage(err.response.data.message);
+      return err.response;
+    });
+  const res = await Emails;
+  return res.data.data.emails;
+};
+
 export default {
   uploadFile,
   getListFiles,
   filterFiles,
   updateStatusFile,
-  actionFile
+  actionFile,
+  getListSharedEmail
 };

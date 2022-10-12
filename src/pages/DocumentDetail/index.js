@@ -13,6 +13,7 @@ import styles from './DocumentDetail.module.scss';
 import localStorageConstants from '~/constants/localStorage';
 import localizationConstants from '~/constants/localization';
 import cookies from 'js-cookies';
+import { fileServices } from '~/services';
 
 const { LOCALIZATION } = localStorageConstants;
 const { REGIONS } = localizationConstants;
@@ -52,6 +53,10 @@ function DocumentDetail() {
   const closeLoading = () => {
     setLoading(false);
   };
+
+  const handleLikeFile = () => {
+    fileServices.actionFile({ 'id': fileDetail.id, 'type': 1 });
+  }
 
   // const downloadFile = async () => {
   //   setDownloadLoading(true);
@@ -103,7 +108,7 @@ function DocumentDetail() {
             Download
           </Button>
           {!!currentUser ? (
-            <Button type='primary' icon={<LikeOutlined />}>
+            <Button type='primary' onClick={handleLikeFile} icon={<LikeOutlined />}>
               Like
             </Button>) : (<></>)}
         </div>

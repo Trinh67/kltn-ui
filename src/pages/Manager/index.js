@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { Menu, Button, Table, Tag, Modal, Space, Input } from 'antd';
+import { Menu, Button, Table, Tag, Modal, Space, Input, Tooltip, Select } from 'antd';
 import { useState, useEffect } from 'react';
 import {
   CloudUploadOutlined,
@@ -11,50 +11,58 @@ import {
   CloudSyncOutlined,
   CloseCircleOutlined,
   SendOutlined,
+  QuestionCircleOutlined,
+  InfoCircleOutlined
 } from '@ant-design/icons';
 
 import { t } from '~/helpers/i18n';
-import { fileServices } from '~/services';
+import { fileServices, userServices } from '~/services';
 import styles from './Manager.module.scss';
-import { CustomModal } from '~/components/Modal'
+import { CustomModal } from '~/components/Modal';
+import localStorageConstants from '~/constants/localStorage';
+import localizationConstants from '~/constants/localization';
+
+const { LOCALIZATION } = localStorageConstants;
+const { REGIONS } = localizationConstants;
 
 const cx = classNames.bind(styles);
+const { Option } = Select;
 
 const adminTabs = [
   {
-    label: 'Tệp đang xử lí',
+    label: t('TabTitle.Processing'),
     key: 'processing',
     icon: <Loading3QuartersOutlined />,
   },
   {
-    label: 'Tệp chờ duyệt',
+    label: t('TabTitle.Draft'),
     key: 'draft',
     icon: <CloudSyncOutlined />,
   },
   {
-    label: 'Tệp đã từ chối duyệt',
+    label: t('TabTitle.Refuse'),
     key: 'refuse',
     icon: <DislikeOutlined />,
   },
   {
-    label: 'Tệp đã duyệt',
+    label: t('TabTitle.Approved'),
     key: 'approved',
     icon: <LikeOutlined />,
   },
 ];
 const guestTabs = [
   {
-    label: 'Tệp đã tải lên',
+    label: t('TabTitle.Uploaded'),
     key: 'uploaded',
     icon: <CloudUploadOutlined />,
   },
   {
-    label: 'Tệp yêu thích',
+    label: t('TabTitle.Liked'),
     key: 'favorite',
     icon: <LikeOutlined />,
   },
   {
-    label: 'Tệp được chia sẻ',
+    label: t('TabTitle.Shared'),
     key: 'share',
     icon: <ShareAltOutlined />,
   },
@@ -69,10 +77,14 @@ const FileManager = () => {
 
   // Modal Approve
   const [showApprovedModal, setShowApprovedModal] = useState(false);
-  const [googleDriverId, setGoogleDriverId] = useState("");
+  const [googleDriverId, setGoogleDriverId] = useState('');
   // Modal Refuse
   const [showRefuseModal, setShowRefuseModal] = useState(false);
-  const [refuseReason, setRefuseReason] = useState("");
+  const [refuseReason, setRefuseReason] = useState('');
+  // Modal Share
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [shareFieldId, setShareFieldId] = useState('');
+  const [shareToUserId, setShareToUserId] = useState([]);
 
   const [page, setPage] = useState(1);
 
@@ -81,6 +93,18 @@ const FileManager = () => {
   };
 
   const [files, setFiles] = useState([]);
+  const [children, setChildren] = useState([]);
+
+  // Logic Share Modal
+  const initUserList = async () => {
+    let list_user = await userServices.getListUsers();
+    let listOptions = [];
+    for (let i = 0; i < list_user.length; i++) {
+      let item = list_user[i];
+      listOptions.push(<Option key={i} value={item.userId}>{item.email}</Option>);
+    }
+    setChildren(listOptions)
+  }
 
   const initial = async (key) => {
     let type = null;
@@ -119,6 +143,17 @@ const FileManager = () => {
         break;
     }
     const result = await fileServices.filterFiles(type);
+    if (type == 4){
+      for (var i = 0; i < result.data.files.length; i++){
+        let file = result.data.files[i];
+        if (file.status == 3){
+          let emails = await fileServices.getListSharedEmail({"fileId": file.id});
+          if (emails.length > 0){
+            file.refuseReason = `${t('Tooltip.SharedWith')}: ${emails}`.replace(',', ' / ');
+          } else file.refuseReason = t('Tooltip.NotShared')
+        }
+      }
+    }
     setFiles(result.data.files);
   };
 
@@ -130,10 +165,11 @@ const FileManager = () => {
     if (currentUser.email === 'trinhxuantrinh.yd267@gmail.com') {
       setCurrent('processing');
     } else setCurrent('uploaded');
-    if(!firstLoad){
+    if (!firstLoad) {
       setPage(1);
       initial(current);
     }
+    initUserList();
     setFirstLoad(false);
   }, []);
 
@@ -158,7 +194,7 @@ const FileManager = () => {
       cancelText: t('Actions.Cancel'),
       okType: 'primary',
       onOk: () => {
-        fileServices.updateStatusFile({"id": id, "type": -1});
+        fileServices.updateStatusFile({ 'id': id, 'type': -1 });
         setTimeout(reloadComponent, 1200);
       },
     });
@@ -172,7 +208,8 @@ const FileManager = () => {
       cancelText: t('Actions.Cancel'),
       okType: 'primary',
       onOk: () => {
-        console.log(id);
+        fileServices.actionFile({ 'id': id, 'type': 0 });
+        setTimeout(reloadComponent, 1000);
       },
     });
   };
@@ -205,127 +242,161 @@ const FileManager = () => {
     });
   };
 
+  const ShareFile = (id) => {
+    setShareFieldId(id);
+    setShowShareModal(true);
+  };
+
   const uploadedColumns = [
     {
-      title: 'STT',
+      title: t('TableTitle.STT'),
       key: 'index',
       width: '5%',
       render: (value, item, index) => <p>{(page - 1) * 10 + index + 1}</p>,
     },
     {
-      title: 'Tiêu đề',
+      title: t('TableTitle.Title'),
       dataIndex: 'fileTitle',
       key: 'fileTitle',
       width: '20%',
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Tác giả',
+      title: t('TableTitle.Author'),
       dataIndex: 'authorName',
       key: 'authorName',
       width: '10%',
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Danh mục',
-      dataIndex: 'categoryVi',
-      key: 'categoryVi',
+      title: t('TableTitle.Category'),
+      dataIndex: localStorage.getItem(LOCALIZATION) === REGIONS.vi.key ? 'categoryVi' : 'categoryEn',
+      key: localStorage.getItem(LOCALIZATION) === REGIONS.vi.key ? 'categoryVi' : 'categoryEn',
       width: '20%',
     },
     {
-      title: 'Ngày đăng',
+      title: t('TableTitle.DateUpload'),
       dataIndex: 'updatedAt',
       key: 'updatedAt',
       width: '20%',
       align: 'center',
     },
     {
-      title: 'Trạng thái',
+      title: t('TableTitle.Status'),
       dataIndex: 'status',
       key: 'status',
       width: '15%',
       align: 'center',
-      render: (status) => {
+      render: (value, item) => {
         let color, text;
-        if (status === 0) {
+        if (item.status === 0) {
           color = 'warning';
-          text = 'processing';
+          text = t('FileStatus.Processing');
         }
-        if (status === 1) {
+        if (item.status === 1) {
           color = 'geekblue';
-          text = 'Wait to approve';
+          text = t('FileStatus.Draft');
         }
-        if (status === 2) {
+        if (item.status === 2) {
           color = 'volcano';
-          text = 'Refuse approved';
+          text = t('FileStatus.Refuse');
         }
-        if (status === 3) {
+        if (item.status === 3) {
           color = 'success';
-          text = 'Approved';
+          text = t('FileStatus.Approved');
         }
 
         return (
-          <Tag color={color} key={status} style={{ fontWeight: 'bold' }}>
-            {text.toUpperCase()}
-          </Tag>
+          <>
+            <Tag color={color} key={item.status} style={{ fontWeight: 'bold' }}>
+              {text.toUpperCase()}
+            </Tag>
+            {item.status === 2 ? (
+              <Tooltip title={item.refuseReason}>
+                <QuestionCircleOutlined />
+              </Tooltip>
+            ) : (<></>)}
+          </>
         );
       },
     },
     {
-      title: 'Hành động',
+      title: t('TableTitle.Action'),
       key: 'action',
       width: '10%',
       align: 'center',
-      render: (value, item) => (
-        <Button
-          type="danger"
-          shape="round"
-          icon={<DeleteOutlined />}
-          onClick={(e) => DeleteFile(item.id)}
-          size="default"
-        >
-          Xóa tệp
-        </Button>
-      ),
+      render: (value, item) => {
+        return (
+          <>
+            {item.status <= 2 ? (
+              <Button
+                disabled={item.status > 2}
+                type='danger'
+                shape='round'
+                icon={<DeleteOutlined />}
+                onClick={(e) => DeleteFile(item.id)}
+                size='default'
+              >
+                {t('Actions.Delete')}
+              </Button>
+            ) : (<></>)}
+            {item.status == 3 ? (
+              <>
+                <Button
+                  type='primary'
+                  shape='round'
+                  icon={<ShareAltOutlined />}
+                  onClick={(e) => ShareFile(item.id)}
+                  size='default'
+                >
+                  {t('Actions.Share')}
+                </Button>
+                <Tooltip placement="left" title={item.refuseReason}>
+                  <InfoCircleOutlined />
+                </Tooltip>
+              </>
+            ) : (<></>)}
+          </>)
+      },
     },
   ];
 
   const favoriteColumns = [
     {
-      title: 'STT',
+      title: t('TableTitle.STT'),
       key: 'index',
       width: '5%',
       render: (value, item, index) => <p>{(page - 1) * 10 + index + 1}</p>,
     },
     {
-      title: 'Tiêu đề',
+      title: t('TableTitle.Title'),
       dataIndex: 'fileTitle',
       key: 'fileTitle',
       width: '20%',
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Tác giả',
+      title: t('TableTitle.Author'),
       dataIndex: 'authorName',
       key: 'authorName',
       width: '10%',
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Danh mục',
-      dataIndex: 'categoryVi',
-      key: 'categoryVi',
+      title: t('TableTitle.Category'),
+      dataIndex: localStorage.getItem(LOCALIZATION) === REGIONS.vi.key ? 'categoryVi' : 'categoryEn',
+      key: localStorage.getItem(LOCALIZATION) === REGIONS.vi.key ? 'categoryVi' : 'categoryEn',
       width: '15%',
     },
     {
-      title: 'Ngày đăng',
+      title: t('TableTitle.DateUpload'),
       dataIndex: 'updatedAt',
       key: 'updatedAt',
       width: '20%',
       align: 'center',
     },
     {
-      title: 'Trạng thái',
+      title: t('TableTitle.Status'),
       dataIndex: 'status',
       key: 'status',
       width: '15%',
@@ -334,19 +405,19 @@ const FileManager = () => {
         let color, text;
         if (status === 0) {
           color = 'warning';
-          text = 'processing';
+          text = t('FileStatus.Processing');
         }
         if (status === 1) {
           color = 'geekblue';
-          text = 'Wait to approve';
+          text = t('FileStatus.Draft');
         }
         if (status === 2) {
           color = 'volcano';
-          text = 'Refuse approved';
+          text = t('FileStatus.Refuse');
         }
         if (status === 3) {
           color = 'success';
-          text = 'Approved';
+          text = t('FileStatus.Approved');
         }
 
         return (
@@ -357,17 +428,17 @@ const FileManager = () => {
       },
     },
     {
-      title: 'Hành động',
+      title: t('TableTitle.Action'),
       key: 'action',
       width: '10%',
       align: 'center',
       render: (value, item) => (
         <Button
-          type="danger"
-          shape="round"
+          type='danger'
+          shape='round'
           icon={<DeleteOutlined />}
           onClick={(e) => DislikeFile(item.id)}
-          size="default"
+          size='default'
         >
           Bỏ thích
         </Button>
@@ -377,40 +448,40 @@ const FileManager = () => {
 
   const sharedColumns = [
     {
-      title: 'STT',
+      title: t('TableTitle.STT'),
       key: 'index',
       width: '5%',
       render: (value, item, index) => <p>{(page - 1) * 10 + index + 1}</p>,
     },
     {
-      title: 'Tiêu đề',
+      title: t('TableTitle.Title'),
       dataIndex: 'fileTitle',
       key: 'fileTitle',
       width: '25%',
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Tác giả',
+      title: t('TableTitle.Author'),
       dataIndex: 'authorName',
       key: 'authorName',
       width: '15%',
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Danh mục',
-      dataIndex: 'categoryVi',
-      key: 'categoryVi',
+      title: t('TableTitle.Category'),
+      dataIndex: localStorage.getItem(LOCALIZATION) === REGIONS.vi.key ? 'categoryVi' : 'categoryEn',
+      key: localStorage.getItem(LOCALIZATION) === REGIONS.vi.key ? 'categoryVi' : 'categoryEn',
       width: '20%',
     },
     {
-      title: 'Ngày đăng',
+      title: t('TableTitle.DateUpload'),
       dataIndex: 'updatedAt',
       key: 'updatedAt',
       width: '20%',
       align: 'center',
     },
     {
-      title: 'Trạng thái',
+      title: t('TableTitle.Status'),
       dataIndex: 'status',
       key: 'status',
       width: '15%',
@@ -419,19 +490,19 @@ const FileManager = () => {
         let color, text;
         if (status === 0) {
           color = 'warning';
-          text = 'processing';
+          text = t('FileStatus.Processing');
         }
         if (status === 1) {
           color = 'geekblue';
-          text = 'Wait to approve';
+          text = t('FileStatus.Draft');
         }
         if (status === 2) {
           color = 'volcano';
-          text = 'Refuse approved';
+          text = t('FileStatus.Refuse');
         }
         if (status === 3) {
           color = 'success';
-          text = 'Approved';
+          text = t('FileStatus.Approved');
         }
 
         return (
@@ -445,40 +516,40 @@ const FileManager = () => {
 
   const processingColumns = [
     {
-      title: 'STT',
+      title: t('TableTitle.STT'),
       key: 'index',
       width: '5%',
       render: (value, item, index) => <p>{(page - 1) * 10 + index + 1}</p>,
     },
     {
-      title: 'Tiêu đề',
+      title: t('TableTitle.Title'),
       dataIndex: 'fileTitle',
       key: 'fileTitle',
       width: '25%',
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Tác giả',
+      title: t('TableTitle.Author'),
       dataIndex: 'authorName',
       key: 'authorName',
       width: '15%',
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Danh mục',
-      dataIndex: 'categoryVi',
-      key: 'categoryVi',
+      title: t('TableTitle.Category'),
+      dataIndex: localStorage.getItem(LOCALIZATION) === REGIONS.vi.key ? 'categoryVi' : 'categoryEn',
+      key: localStorage.getItem(LOCALIZATION) === REGIONS.vi.key ? 'categoryVi' : 'categoryEn',
       width: '20%',
     },
     {
-      title: 'Ngày đăng',
+      title: t('TableTitle.DateUpload'),
       dataIndex: 'updatedAt',
       key: 'updatedAt',
       width: '20%',
       align: 'center',
     },
     {
-      title: 'Trạng thái',
+      title: t('TableTitle.Status'),
       dataIndex: 'status',
       key: 'status',
       width: '15%',
@@ -487,19 +558,19 @@ const FileManager = () => {
         let color, text;
         if (status === 0) {
           color = 'warning';
-          text = 'processing';
+          text = t('FileStatus.Processing');
         }
         if (status === 1) {
           color = 'geekblue';
-          text = 'Wait to approve';
+          text = t('FileStatus.Draft');
         }
         if (status === 2) {
           color = 'volcano';
-          text = 'Refuse approved';
+          text = t('FileStatus.Refuse');
         }
         if (status === 3) {
           color = 'success';
-          text = 'Approved';
+          text = t('FileStatus.Approved');
         }
 
         return (
@@ -513,40 +584,40 @@ const FileManager = () => {
 
   const draftColumns = [
     {
-      title: 'STT',
+      title: t('TableTitle.STT'),
       key: 'index',
       width: '5%',
       render: (value, item, index) => <p>{(page - 1) * 10 + index + 1}</p>,
     },
     {
-      title: 'Tiêu đề',
+      title: t('TableTitle.Title'),
       dataIndex: 'fileTitle',
       key: 'fileTitle',
       width: '20%',
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Tác giả',
+      title: t('TableTitle.Author'),
       dataIndex: 'authorName',
       key: 'authorName',
       width: '10%',
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Danh mục',
-      dataIndex: 'categoryVi',
-      key: 'categoryVi',
+      title: t('TableTitle.Category'),
+      dataIndex: localStorage.getItem(LOCALIZATION) === REGIONS.vi.key ? 'categoryVi' : 'categoryEn',
+      key: localStorage.getItem(LOCALIZATION) === REGIONS.vi.key ? 'categoryVi' : 'categoryEn',
       width: '15%',
     },
     {
-      title: 'Ngày đăng',
+      title: t('TableTitle.DateUpload'),
       dataIndex: 'updatedAt',
       key: 'updatedAt',
       width: '15%',
       align: 'center',
     },
     {
-      title: 'Trạng thái',
+      title: t('TableTitle.Status'),
       dataIndex: 'status',
       key: 'status',
       width: '15%',
@@ -555,19 +626,19 @@ const FileManager = () => {
         let color, text;
         if (status === 0) {
           color = 'warning';
-          text = 'processing';
+          text = t('FileStatus.Processing');
         }
         if (status === 1) {
           color = 'geekblue';
-          text = 'Wait to approve';
+          text = t('FileStatus.Draft');
         }
         if (status === 2) {
           color = 'volcano';
-          text = 'Refuse approved';
+          text = t('FileStatus.Refuse');
         }
         if (status === 3) {
           color = 'success';
-          text = 'Approved';
+          text = t('FileStatus.Approved');
         }
 
         return (
@@ -578,27 +649,27 @@ const FileManager = () => {
       },
     },
     {
-      title: 'Hành động',
+      title: t('TableTitle.Action'),
       key: 'action',
       width: '25%',
       align: 'center',
       render: (value, item) => (
         <Space>
           <Button
-            type="primary"
-            shape="round"
+            type='primary'
+            shape='round'
             icon={<LikeOutlined />}
             onClick={(e) => ApprovedFile(item.id)}
-            size="default"
+            size='default'
           >
             Chấp nhận
           </Button>
           <Button
-            type="danger"
-            shape="round"
+            type='danger'
+            shape='round'
             icon={<DeleteOutlined />}
             onClick={(e) => RefuseFile(item.id)}
-            size="default"
+            size='default'
           >
             Từ chối
           </Button>
@@ -611,40 +682,40 @@ const FileManager = () => {
 
   const approvedColumns = [
     {
-      title: 'STT',
+      title: t('TableTitle.STT'),
       key: 'index',
       width: '5%',
       render: (value, item, index) => <p>{(page - 1) * 10 + index + 1}</p>,
     },
     {
-      title: 'Tiêu đề',
+      title: t('TableTitle.Title'),
       dataIndex: 'fileTitle',
       key: 'fileTitle',
       width: '25%',
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Tác giả',
+      title: t('TableTitle.Author'),
       dataIndex: 'authorName',
       key: 'authorName',
       width: '15%',
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Danh mục',
-      dataIndex: 'categoryVi',
-      key: 'categoryVi',
+      title: t('TableTitle.Category'),
+      dataIndex: localStorage.getItem(LOCALIZATION) === REGIONS.vi.key ? 'categoryVi' : 'categoryEn',
+      key: localStorage.getItem(LOCALIZATION) === REGIONS.vi.key ? 'categoryVi' : 'categoryEn',
       width: '15%',
     },
     {
-      title: 'Ngày đăng',
+      title: t('TableTitle.DateUpload'),
       dataIndex: 'updatedAt',
       key: 'updatedAt',
       width: '20%',
       align: 'center',
     },
     {
-      title: 'Trạng thái',
+      title: t('TableTitle.Status'),
       dataIndex: 'status',
       key: 'status',
       width: '15%',
@@ -657,15 +728,15 @@ const FileManager = () => {
         }
         if (status === 1) {
           color = 'geekblue';
-          text = 'Wait to approve';
+          text = t('FileStatus.Draft');
         }
         if (status === 2) {
           color = 'volcano';
-          text = 'Refuse approved';
+          text = t('FileStatus.Refuse');
         }
         if (status === 3) {
           color = 'success';
-          text = 'Approved';
+          text = t('FileStatus.Approved');
         }
 
         return (
@@ -680,63 +751,104 @@ const FileManager = () => {
   // Modal Approve function
   const handleApprovedSubmit = () => {
     console.log(googleDriverId);
-    // fileServices.updateStatusFile({"id": fileId, "type": 3, "googleDriverId": googleDriverId});
-    // setTimeout(reloadComponent, 1000);
-    setGoogleDriverId("");
+    fileServices.updateStatusFile({ 'id': fileId, 'type': 3, 'googleDriverId': googleDriverId });
+    setTimeout(reloadComponent, 1000);
+    setGoogleDriverId('');
     setShowApprovedModal(false);
-  }
+  };
   const handleApprovedClose = () => {
-    setRefuseReason("");
+    setRefuseReason('');
     setShowApprovedModal(false);
-  }
+  };
   // Modal Refuse function
   const handleRefuseSubmit = () => {
     console.log(refuseReason);
-    // fileServices.updateStatusFile({"id": fileId, "type": 2, "refuseReason": refuseReason});
-    // setTimeout(reloadComponent, 1000);
-    setRefuseReason("");
+    fileServices.updateStatusFile({ 'id': fileId, 'type': 2, 'refuseReason': refuseReason });
+    setTimeout(reloadComponent, 1000);
+    setRefuseReason('');
     setShowRefuseModal(false);
-  }
+  };
   const handleRefuseClose = () => {
-    setRefuseReason("");
+    setRefuseReason('');
     setShowRefuseModal(false);
-  }
+  };
+  // Modal Share function
+  const handleShareSubmit = () => {
+    console.log(shareToUserId);
+    fileServices.actionFile({ 'id': shareFieldId, 'type': 3, 'shareToUserId': shareToUserId });
+    setTimeout(reloadComponent, 1000);
+    setShareFieldId('');
+    setShareToUserId('');
+    setShowShareModal(false);
+  };
+  const handleShareClose = () => {
+    setShareFieldId('');
+    setShareToUserId('');
+    setShowShareModal(false);
+  };
+  const handleShareChange = (value) => {
+    setShareToUserId(value)
+  };
 
   return (
     <>
       <Menu
         onClick={onClick}
         selectedKeys={[current]}
-        mode="horizontal"
+        mode='horizontal'
         items={currentUser.email === 'trinhxuantrinh.yd267@gmail.com' ? adminTabs : guestTabs}
         style={{ justifyContent: 'center', fontSize: '1.6rem' }}
       />
       <CustomModal show={showApprovedModal}>
-        <div className={cx("modal-header")}>{t('Modal.ApproveDocument')}</div>
-        <div className={cx("modal-body")}>
+        <div className={cx('modal-header')}>{t('Modal.ApproveDocument')}</div>
+        <div className={cx('modal-body')}>
           <label>{t('Modal.GoogleDriverId')}</label>
-          <Input placeholder={t('Modal.EnterGoogleDriverId')} onChange={e => setGoogleDriverId(e.target.value)}/>
+          <Input placeholder={t('Modal.EnterGoogleDriverId')} onChange={e => setGoogleDriverId(e.target.value)} />
         </div>
-        <div className={cx("modal-footer")}>
-          <Button onClick={handleApprovedClose} type="default" icon={<CloseCircleOutlined />}>
+        <div className={cx('modal-footer')}>
+          <Button onClick={handleApprovedClose} type='default' icon={<CloseCircleOutlined />}>
             {t('Actions.Cancel')}
           </Button>
-          <Button onClick={handleApprovedSubmit} type="primary" icon={<SendOutlined />}>
+          <Button onClick={handleApprovedSubmit} type='primary' icon={<SendOutlined />}>
             {t('Actions.Confirm')}
           </Button>
         </div>
       </CustomModal>
       <CustomModal show={showRefuseModal}>
-        <div className={cx("modal-header")}>{t('Modal.RefuseDocument')}</div>
-        <div className={cx("modal-body")}>
+        <div className={cx('modal-header')}>{t('Modal.RefuseDocument')}</div>
+        <div className={cx('modal-body')}>
           <label>{t('Modal.Reason')}</label>
-          <Input placeholder={t('Modal.EnterReason')} onChange={e => setRefuseReason(e.target.value)}/>
+          <Input placeholder={t('Modal.EnterReason')} onChange={e => setRefuseReason(e.target.value)} />
         </div>
-        <div className={cx("modal-footer")}>
-          <Button onClick={handleRefuseClose} type="default" icon={<CloseCircleOutlined />}>
+        <div className={cx('modal-footer')}>
+          <Button onClick={handleRefuseClose} type='default' icon={<CloseCircleOutlined />}>
             {t('Actions.Cancel')}
           </Button>
-          <Button onClick={handleRefuseSubmit} type="primary" icon={<SendOutlined />}>
+          <Button onClick={handleRefuseSubmit} type='primary' icon={<SendOutlined />}>
+            {t('Actions.Confirm')}
+          </Button>
+        </div>
+      </CustomModal>
+      <CustomModal show={showShareModal}>
+        <div className={cx('modal-header')}>{t('Modal.ShareDocument')}</div>
+        <div className={cx('modal-body')}>
+          <label>{t('Modal.Share')}</label>
+          <Select
+            mode='multiple'
+            showSearch
+            style={{ width: '100%' }}
+            allowClear
+            placeholder={t('Modal.EnterShare')}
+            onChange={handleShareChange}
+          >
+            {children}
+          </Select>
+        </div>
+        <div className={cx('modal-footer')}>
+          <Button onClick={handleShareClose} type='default' icon={<CloseCircleOutlined />}>
+            {t('Actions.Cancel')}
+          </Button>
+          <Button onClick={handleShareSubmit} type='primary' icon={<SendOutlined />}>
             {t('Actions.Confirm')}
           </Button>
         </div>
@@ -744,7 +856,7 @@ const FileManager = () => {
       <Table
         columns={columns}
         dataSource={files}
-        rowKey="id"
+        rowKey='id'
         pagination={{
           onChange(page_num) {
             setPage(page_num);

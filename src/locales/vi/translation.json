@@ -37,7 +37,8 @@
     "Ok": "Chắc chắn",
     "No": "Không",
     "Close": "Đóng",
-    "ConfirmDelete": "Chắc chắn xóa"
+    "ConfirmDelete": "Chắc chắn xóa",
+    "Share": "Chia sẻ"
   },
   "Messages": {
     "Successful": "Thành công",
@@ -104,6 +105,31 @@
     "EnterGoogleDriverId": "Nhập Google Driver Id của tài liệu",
     "RefuseDocument": "Từ chối phê duyệt tài liệu",
     "Reason": "Lí do từ chối phê duyệt tài liệu",
-    "EnterReason": "NHập lí do từ chối phê duyệt"
+    "EnterReason": "NHập lí do từ chối phê duyệt",
+    "ShareDocument": "Chia sẻ tài liệu",
+    "Share": "Chia sẻ tài liệu tới:",
+    "EnterShare": "Chọn người dùng"
+  },
+  "Tooltip": {
+    "SharedWith": "Đã chia sẻ với",
+    "NotShared": "Chia sẻ với 0 người khác"
+  },
+  "TableTitle": {
+    "STT": "STT",
+    "Title": "Tiêu đề",
+    "Author": "Tác giả",
+    "Category": "Danh mục",
+    "DateUpload": "Ngày đăng",
+    "Status": "Trạng thái",
+    "Action": "Hành động"
+  },
+  "TabTitle": {
+    "Uploaded": "Tệp đã tải lên",
+    "Liked": "Tệp đã thích",
+    "Shared": "Tệp được chia sẻ",
+    "Processing": "Tệp đang xử lí",
+    "Draft": "Tệp chờ duyệt",
+    "Refuse": "Tệp đã từ chối duyệt",
+    "Approved": "Tệp đã duyệt"
   }
 }

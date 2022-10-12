@@ -37,7 +37,8 @@
     "Ok": "Yes",
     "No": "No",
     "Close": "Close",
-    "ConfirmDelete": "Delete"
+    "ConfirmDelete": "Delete",
+    "Share": "Share"
   },
   "Messages": {
     "Successful": "Successful",
@@ -104,6 +105,31 @@
     "EnterGoogleDriverId": "Enter Google Driver Id of Document",
     "RefuseDocument": "Refuse Document",
     "Reason": "Reason for Refuse Document",
-    "EnterReason": "Enter Reason for Refuse Document"
+    "EnterReason": "Enter Reason for Refuse Document",
+    "ShareDocument": "Share Document",
+    "Share": "Share document to:",
+    "EnterShare": "Select User"
+  },
+  "Tooltip": {
+    "SharedWith": "Shared with",
+    "NotShared": "Shared with 0 other user"
+  },
+  "TableTitle": {
+    "STT": "No.",
+    "Title": "Title",
+    "Author": "Author",
+    "Category": "Category",
+    "DateUpload": "Date Upload",
+    "Status": "Status",
+    "Action": "Action"
+  },
+  "TabTitle": {
+    "Uploaded": "Document Uploaded",
+    "Liked": "Document Liked",
+    "Shared": "Shared Document",
+    "Processing": "Document Processing",
+    "Draft": "Document Wait to Approved",
+    "Refuse": "Refuse Document",
+    "Approved": "Approved Document"
   }
 }
