@@ -26,8 +26,8 @@ import Menu from '~/components/Popper/Menu';
 import localizationHelpers from '~/helpers/localization';
 import localizationConstants from '~/constants/localization';
 import { NotificationIcon, UploadIcon } from '~/components/Icons';
-import NotifyMe from 'react-notification-timeline';
 import { notificationServices } from '~/services';
+import NotificationList from '~/components/Popper/Notification';
 
 const cx = classNames.bind(styles);
 
@@ -122,19 +122,6 @@ function Header() {
     getListNoti();
   }, []);
 
-  const data = [
-    {
-      "id": 2,
-      "content": "Admin da xet duyen tai lieu cua ban",
-      "createdAt": 1596119688264
-    },
-    {
-      "id": 1,
-      "content": "Ban da upload tai lieu thanh cong",
-      "createdAt": 1596119638264
-    }
-  ]
-
   return (
     <header className={cx('wrapper')}>
       <div className={cx('inner')}>
@@ -159,26 +146,18 @@ function Header() {
               {/*    <span className={cx('badge')}>2</span>*/}
               {/*  </button>*/}
               {/*</Tippy>*/}
-              {/*<Tippy delay={[0, 10]} content={t('HeaderActions.Notification')} placement="bottom">*/}
-              {/*  <Menu items={userMenu} placement="bottom">*/}
-              {/*    <button className={cx('action-btn')}>*/}
-              {/*      <NotificationIcon />*/}
-              {/*      <span className={cx('badge')}>5</span>*/}
-              {/*    </button>*/}
-              {/*  </Menu>*/}
-              {/*</Tippy>*/}
-              <NotifyMe
-                data={data}
-                storageKey='notific_key'
-                notific_key='createAt'
-                notific_value='content'
-                heading='Notification Alerts'
-                //sortedByKey={false}
-                //showDate={true}
-                size={32}
-                color="white"
-                backgroundColor="white"
-              />
+              <Tippy delay={[0, 10]} content={t('HeaderActions.Notification')} placement="bottom">
+                <NotificationList items={notifications} placement="bottom">
+                  <button className={cx('action-btn')}>
+                    <NotificationIcon />
+                    {notifications.length > 0 ? (
+                        <span className={cx('badge')}>{notifications.length}</span>
+                      )
+                      : (<></>)
+                    }
+                  </button>
+                </NotificationList>
+              </Tippy>
             </>
           ) : (
             <Link to="/login">

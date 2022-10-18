@@ -13,7 +13,7 @@ const ApiUrl = apiUrl + 'notification';
 const getListNotifications = async () => {
   const headers = { headers: { Authorization: `Bearer ${cookies.getItem('token')}` } };
   const Notifications = axios
-    .get(ApiUrl, headers)
+    .get(ApiUrl + '/', headers)
     .then((response) => {
       return response;
     })
@@ -26,6 +26,25 @@ const getListNotifications = async () => {
   return notifications;
 };
 
+/**
+ * Cập nhật danh sách thông báo
+ */
+const readAllNotification = async () => {
+  const headers = { headers: { Authorization: `Bearer ${cookies.getItem('token')}` } };
+  const Notifications = axios
+    .post(ApiUrl + '/make-all-read', headers)
+    .then((response) => {
+      return response;
+    })
+    .catch((err) => {
+      Noti.ErrorMessage(err.response.data.message);
+      return err.response;
+    });
+  const res = await Notifications;
+  return true;
+}
+
 export default {
   getListNotifications,
+  readAllNotification
 };

@@ -1,0 +1,40 @@
+// Notification wrapper
+.notification-list {
+    width: 360px;
+    height: 500px;
+    overflow-y: auto;
+
+    .notification-item {
+        margin-left: 0;
+    }
+}
+
+.notification-popper {
+    padding-bottom: 10px;
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.title {
+    text-align: center;
+    font-weight: 600;
+
+    p {
+        font-size: 1.8rem;
+    }
+}
+
+// Notification items
+.notification-item {
+    width: 100%;
+    justify-content: flex-start;
+    border-radius: 10px;
+    padding: 11px 16px;
+    line-height: 1.8rem;
+    border: 1px solid #cccccc;
+    margin-top: 10px;
+
+    &:hover {
+        background-color: rgba(22, 24, 35, 0.03);
+    }
+}
