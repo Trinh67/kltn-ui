@@ -25,5 +25,5 @@ const getListCategories = async () => {
 };
 
 export default {
-    getListCategories,
+  getListCategories,
 };

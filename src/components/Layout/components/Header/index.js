@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import cookies from 'js-cookies';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
@@ -26,6 +26,8 @@ import Menu from '~/components/Popper/Menu';
 import localizationHelpers from '~/helpers/localization';
 import localizationConstants from '~/constants/localization';
 import { NotificationIcon, UploadIcon } from '~/components/Icons';
+import NotifyMe from 'react-notification-timeline';
+import { notificationServices } from '~/services';
 
 const cx = classNames.bind(styles);
 
@@ -60,8 +62,29 @@ const MENU_ITEMS = [
     to: '/help',
   },
 ];
+const userMenu = [
+  {
+    icon: <FontAwesomeIcon icon={faUser} />,
+    title: t('MenuActions.ViewProfile'),
+    to: '/profile',
+  },
+  {
+    icon: <FontAwesomeIcon icon={faChartLine} />,
+    title: t('MenuActions.FileManager'),
+    to: '/manager',
+  },
+  ...MENU_ITEMS,
+  {
+    icon: <FontAwesomeIcon icon={faSignOut} />,
+    title: t('MenuActions.LogOut'),
+    separate: true,
+    type: 'logout',
+  },
+];
 
 function Header() {
+  const [notifications, setNotifications] = useState([]);
+
   const currentUser = !!cookies.getItem('token') ? JSON.parse(localStorage.getItem('currentUser')) : null;
 
   // Handle logic
@@ -90,25 +113,27 @@ function Header() {
     }
   };
 
-  const userMenu = [
+  const getListNoti = async () => {
+    const data = await notificationServices.getListNotifications();
+    setNotifications(data);
+  }
+
+  useEffect(() => {
+    getListNoti();
+  }, []);
+
+  const data = [
     {
-      icon: <FontAwesomeIcon icon={faUser} />,
-      title: t('MenuActions.ViewProfile'),
-      to: '/profile',
+      "id": 2,
+      "content": "Admin da xet duyen tai lieu cua ban",
+      "createdAt": 1596119688264
     },
     {
-      icon: <FontAwesomeIcon icon={faChartLine} />,
-      title: t('MenuActions.FileManager'),
-      to: '/manager',
-    },
-    ...MENU_ITEMS,
-    {
-      icon: <FontAwesomeIcon icon={faSignOut} />,
-      title: t('MenuActions.LogOut'),
-      separate: true,
-      type: 'logout',
-    },
-  ];
+      "id": 1,
+      "content": "Ban da upload tai lieu thanh cong",
+      "createdAt": 1596119638264
+    }
+  ]
 
   return (
     <header className={cx('wrapper')}>
@@ -121,7 +146,7 @@ function Header() {
         <div className={cx('actions')}>
           {!!currentUser ? (
             <>
-              <Tippy delay={[0, 50]} content={t('HeaderActions.UploadFile')} placement="bottom">
+              <Tippy delay={[0, 10]} content={t('HeaderActions.UploadFile')} placement="bottom">
                 <Link to="/upload">
                   <button className={cx('action-btn')}>
                     <UploadIcon />
@@ -134,14 +159,26 @@ function Header() {
               {/*    <span className={cx('badge')}>2</span>*/}
               {/*  </button>*/}
               {/*</Tippy>*/}
-              <Tippy delay={[0, 50]} content={t('HeaderActions.Notification')} placement="bottom">
-                <Menu items={userMenu} placement="bottom">
-                  <button className={cx('action-btn')}>
-                    <NotificationIcon />
-                    <span className={cx('badge')}>5</span>
-                  </button>
-                </Menu>
-              </Tippy>
+              {/*<Tippy delay={[0, 10]} content={t('HeaderActions.Notification')} placement="bottom">*/}
+              {/*  <Menu items={userMenu} placement="bottom">*/}
+              {/*    <button className={cx('action-btn')}>*/}
+              {/*      <NotificationIcon />*/}
+              {/*      <span className={cx('badge')}>5</span>*/}
+              {/*    </button>*/}
+              {/*  </Menu>*/}
+              {/*</Tippy>*/}
+              <NotifyMe
+                data={data}
+                storageKey='notific_key'
+                notific_key='createAt'
+                notific_value='content'
+                heading='Notification Alerts'
+                //sortedByKey={false}
+                //showDate={true}
+                size={32}
+                color="white"
+                backgroundColor="white"
+              />
             </>
           ) : (
             <Link to="/login">
