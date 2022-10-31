@@ -142,10 +142,10 @@ const getListSharedEmail = async (requestBody) => {
  * Get statistic file
  * @returns List file
  */
-const getStatisticFile = async (requestBody) => {
+const getStatisticFile = async () => {
   const headers = { headers: { Authorization: `Bearer ${cookies.getItem('token')}` } };
   const Files = axios
-    .get(ApiUrl + '/statistic', requestBody, headers)
+    .get(ApiUrl + '/statistic', headers)
     .then((response) => {
       return response;
     })

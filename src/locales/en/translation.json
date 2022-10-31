@@ -84,7 +84,8 @@
     "Attribute": "Attribute",
     "Information": "Information",
     "Name": "Name",
-    "Avatar": "Avatar"
+    "Avatar": "Avatar",
+    "TotalFiles": "Total files uploaded"
   },
   "FileStatus": {
     "Processing": "Processing",

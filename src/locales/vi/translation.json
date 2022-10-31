@@ -84,7 +84,8 @@
     "Attribute": "Thuộc tính",
     "Information": "Thông tin",
     "Name": "Tên hiển thị",
-    "Avatar": "Ảnh đại diện"
+    "Avatar": "Ảnh đại diện",
+    "TotalFiles": "Tổng số tài liệu đã tải lên"
   },
   "FileStatus": {
     "Processing": "Đang xử lí",
