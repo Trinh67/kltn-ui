@@ -6,11 +6,12 @@ import NotificationItem from './NotificationItem';
 import styles from './Notification.module.scss';
 import { Button } from 'antd';
 import { notificationServices } from '~/services';
+import { t } from 'i18next';
 
 const cx = classNames.bind(styles);
 
 function NotificationList({ children, items = []}) {
-  let isFirst = true;
+
   const renderItems = () => {
     return items.map((item, index) => {
       return (
@@ -22,11 +23,11 @@ function NotificationList({ children, items = []}) {
       );
     });
   };
-  const readAllNoti = () => {
-    if(items.length > 0 && !isFirst){
-      notificationServices.readAllNotification()
-    }
-    isFirst = false;
+
+  const makeAllRead = () => {
+      if(items.length > 0){
+        notificationServices.makeReadAllNotification()
+      }
   }
 
   return (
@@ -39,9 +40,8 @@ function NotificationList({ children, items = []}) {
         <div className={cx('notification-list')} tabIndex="-1" {...attrs}>
           <PopperWrapper className={cx('notification-popper')}>
             <div className={cx('title')}>
-              <p>Danh sach thong bao</p>
-              {readAllNoti()}
-              {/*<Button type="primary" onClick={}>Tat ca da doc</Button>*/}
+              <p>{t('Notification.List')}</p>
+              <Button type="primary">{t('Notification.MakeAllRead')}</Button>
             </div>
             {renderItems()}
           </PopperWrapper>

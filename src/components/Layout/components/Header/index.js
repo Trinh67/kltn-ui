@@ -119,7 +119,9 @@ function Header() {
   }
 
   useEffect(() => {
-    getListNoti();
+    if(!!currentUser){
+      getListNoti();
+    }
   }, []);
 
   return (

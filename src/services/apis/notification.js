@@ -29,10 +29,10 @@ const getListNotifications = async () => {
 /**
  * Cập nhật danh sách thông báo
  */
-const readAllNotification = async () => {
+const makeReadAllNotification = async () => {
   const headers = { headers: { Authorization: `Bearer ${cookies.getItem('token')}` } };
   const Notifications = axios
-    .post(ApiUrl + '/make-all-read', headers)
+    .get(ApiUrl + '/make-all-read', headers)
     .then((response) => {
       return response;
     })
@@ -46,5 +46,5 @@ const readAllNotification = async () => {
 
 export default {
   getListNotifications,
-  readAllNotification
+  makeReadAllNotification
 };

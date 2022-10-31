@@ -138,11 +138,31 @@ const getListSharedEmail = async (requestBody) => {
   return res.data.data.emails;
 };
 
+/**
+ * Get statistic file
+ * @returns List file
+ */
+const getStatisticFile = async (requestBody) => {
+  const headers = { headers: { Authorization: `Bearer ${cookies.getItem('token')}` } };
+  const Files = axios
+    .get(ApiUrl + '/statistic', requestBody, headers)
+    .then((response) => {
+      return response;
+    })
+    .catch((err) => {
+      Noti.ErrorMessage(err.response.data.message);
+      return err.response;
+    });
+  const res = await Files;
+  return res.data.data.files;
+};
+
 export default {
   uploadFile,
   getListFiles,
   filterFiles,
   updateStatusFile,
   actionFile,
-  getListSharedEmail
+  getListSharedEmail,
+  getStatisticFile
 };
