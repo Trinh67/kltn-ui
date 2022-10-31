@@ -35,10 +35,10 @@ const Profile = () => {
         type: t('FileStatus.Refuse'),
         value: filterFile(file_list,2),
       },
-      {
-        type: t('FileStatus.Delete'),
-        value: filterFile(file_list,-1),
-      },
+      // {
+      //   type: t('FileStatus.Delete'),
+      //   value: filterFile(file_list,-1),
+      // },
       {
         type: t('FileStatus.Liked'),
         value: filterFile(file_list,5),
@@ -57,6 +57,10 @@ const Profile = () => {
   }, []);
 
   const filterFile = (file_list, status) => {
+    if (status === 4){
+      return filterFile(file_list, 0) + filterFile(file_list, 1) + filterFile(file_list, 2)
+             + filterFile(file_list, 3)
+    }
     let file = file_list.filter(file => {
       return file.status === status
     });
@@ -74,7 +78,7 @@ const Profile = () => {
     radius: 0.8,
     label: {
       type: 'outer',
-      content: '{name} {percentage}',
+      content: '{name} ({percentage})',
     },
     interactions: [
       {
