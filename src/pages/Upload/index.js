@@ -138,9 +138,6 @@ function UploadFile() {
                           {category.nameEn}
                         </Select.Option>
                       ))}
-                    <Select.Option value='12' key='12'>
-                      {t('UploadForm.Options.Other')}
-                    </Select.Option>
                   </Select>
                 </Form.Item>
                 <Form.Item
