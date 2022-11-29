@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Menu } from 'antd';
-import { AppstoreOutlined, CalculatorOutlined, DatabaseOutlined } from '@ant-design/icons';
+import { CalculatorOutlined, DatabaseOutlined } from '@ant-design/icons';
 
 import classNames from 'classnames/bind';
 import styles from './Sidebar.module.scss';
@@ -19,25 +19,20 @@ function getItem(label, key, icon, children, type) {
 
 const items = [
   getItem('Toán', 'sub1', <CalculatorOutlined />, [
-    getItem('Đại số', '1'),
-    getItem('Giải tích', 'sub2', null, [getItem('Giải tích 1', '2'), getItem('Giải tích 2', '3')]),
-    getItem('Toán rời rạc', '4'),
-    getItem('Xác suất thống kê', '5'),
+    getItem('Đại số', '2'),
+    // getItem('Giải tích', 'sub2', null, [getItem('Giải tích 1', '3'), getItem('Giải tích 2', '3')]),
+    getItem('Giải tích', '3'),
+    getItem('Toán rời rạc', '4')
   ]),
-  getItem('Giải thuật', 'sub3', <AppstoreOutlined />, [
-    getItem('Nhập môn lập trình', '6'),
-    getItem('Lập trình nâng cao', '7'),
-    getItem('Lập trình hướng đối tượng', '8'),
+  getItem('Cấu trúc dữ liệu & Giải thuật', '5'),
+  getItem('Dữ liệu', 'sub3', <DatabaseOutlined />, [
+    getItem('Cơ sơ dữ liệu', '6'),
+    getItem('Kho dữ liệu', '7')
   ]),
-  getItem('Dữ liệu', 'sub4', <DatabaseOutlined />, [
-    getItem('Cơ sơ dữ liệu', '9'),
-    getItem('Hệ quản trị Cơ sơ dữ liệu', '10'),
-    getItem('Kho dữ liệu', '11'),
-    getItem('Khai phá dữ liệu', '12'),
-  ]),
+  getItem('Khác', '12'),
 ]; // submenu keys of first level
 
-const rootSubmenuKeys = ['sub1', 'sub3', 'sub4'];
+const rootSubmenuKeys = ['sub1', 'sub3'];
 
 const Sidebar = () => {
   const [openKeys, setOpenKeys] = useState(['sub1']);
@@ -52,6 +47,11 @@ const Sidebar = () => {
     }
   };
 
+  const searchFile = (keys) => {
+    localStorage.setItem('category', keys.key);
+    window.location.reload();
+  }
+
   return (
     <div className={cx('wrapper')}>
       <Menu
@@ -62,6 +62,7 @@ const Sidebar = () => {
           width: 228,
         }}
         items={items}
+        onClick={searchFile}
       />
     </div>
   );

@@ -19,20 +19,24 @@ function DocumentInList(file) {
   let navigate = useNavigate();
 
   const fileDetail = file.file;
-  let imageDetail;
+  let imageDetail, image;
 
   switch (fileDetail.type) {
     case 'pdf':
       imageDetail = images.pdf;
+      image = images.page_2
       break;
     case 'docx':
       imageDetail = images.docx;
+      image = images.page_1
       break;
     case 'pptx':
       imageDetail = images.pptx;
+      image = images.page_1
       break;
     default:
       imageDetail = images.pdf;
+      image = images.page_1
   }
 
   const category = localStorage.getItem(LOCALIZATION) === REGIONS.vi.key ? fileDetail.categoryVi : fileDetail.categoryEn;
@@ -43,7 +47,7 @@ function DocumentInList(file) {
 
   return (
     <div className={cx('wrapper')} onClick={handleDocumentClick}>
-      <Image className={cx('img-document')} src={images.logo} alt='img-document' />
+      <Image className={cx('img-document')} src={image} alt='img-document' />
       <div className={cx('info')}>
         <h4 className={cx('title')}>
           <span>{fileDetail.fileTitle}</span>

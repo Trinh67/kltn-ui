@@ -29,6 +29,24 @@ const uploadFile = async (FileData) => {
 };
 
 /**
+ * Lấy danh sách file theo category
+ * @returns Danh sách file
+ */
+ const getListCategoryFiles = async (id) => {
+  const Files = axios
+    .get(ApiUrl + '/category?id=' + id)
+    .then((response) => {
+      return response;
+    })
+    .catch((err) => {
+      Noti.ErrorMessage(err.response.data.message);
+      return err.response;
+    });
+  const res = await Files;
+  return res.data;
+};
+
+/**
  * Lấy danh sách file
  * @returns Danh sách file
  */
@@ -164,5 +182,6 @@ export default {
   updateStatusFile,
   actionFile,
   getListSharedEmail,
-  getStatisticFile
+  getStatisticFile,
+  getListCategoryFiles
 };
