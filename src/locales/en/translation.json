@@ -136,5 +136,16 @@
   "Notification": {
     "List": "List notifications",
     "MakeAllRead": "Make all notifications has read"
+  },
+  "Category": {
+    "Math": "Math",
+    "Algebra": "Algebra",
+    "Calculus": "Calculus",
+    "DiscreteMathematics": "Discrete Mathematics",
+    "DataStructuresAlgorithms": "Data Structures & Algorithms",
+    "Data": "Data",
+    "Database": "Database",
+    "DataWarehouse": "Data Warehouse",
+    "Other": "Other"
   }
 }
